@@ -4,7 +4,7 @@ from feature_extractor import FeatureExtractor
 from datetime import datetime
 from flask import Flask, request, render_template
 from pathlib import Path
-
+#remove me!!!
 app = Flask(__name__)
 
 # Read image features
