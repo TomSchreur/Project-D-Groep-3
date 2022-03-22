@@ -23,6 +23,11 @@ def index():
     if request.method == 'POST':
         file = request.files['query_img']
 
+        noPictureSelected = 'Geen bestand geselecteerd.'
+
+        if file.filename == '':
+            return render_template('index.html', noPictureSelected=noPictureSelected)
+
         # Save query image
         img = Image.open(file.stream)  # PIL image
         uploaded_img_path = "static/uploaded/" + datetime.now().isoformat().replace(":", ".") + "_" + file.filename
@@ -39,6 +44,45 @@ def index():
                                scores=scores)
     else:
         return render_template('index.html')
+
+# @app.route('/highcontrast', methods=['GET', 'POST'])
+# def highContrastSwitch():
+#     return render_template('highContrastIndex.html');
+
+# @app.route('/', methods=['GET', 'POST'])
+# def normalContrastSwitch():
+#     return render_template('index.html');
+
+@app.route('/high-contrast/', methods=['GET', 'POST'])
+def highContrastSwitch():
+    if request.method == 'POST':
+        file = request.files['query_img']
+
+        noPictureSelected = 'Geen bestand geselecteerd.'
+
+        if file.filename == '':
+            return render_template('highContrastIndex.html', noPictureSelected=noPictureSelected)
+
+        # Save query image
+        img = Image.open(file.stream)  # PIL image
+        uploaded_img_path = "static/uploaded/" + datetime.now().isoformat().replace(":", ".") + "_" + file.filename
+        img.save(uploaded_img_path)
+
+        # Run search
+        query = fe.extract(img)
+        dists = np.linalg.norm(features-query, axis=1)  # L2 distances to features
+        ids = np.argsort(dists)[:30]  # Top 30 results
+        scores = [(dists[id], img_paths[id]) for id in ids]
+
+        return render_template('highcontrastIndex.html',
+                               query_path=uploaded_img_path,
+                               scores=scores)
+    else:
+        return render_template('highContrastIndex.html')    
+
+@app.route('/')
+def normalContrastSwitch():
+  return render_template('index.html')
 
 
 if __name__=="__main__":
