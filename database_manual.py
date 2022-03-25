@@ -52,26 +52,29 @@ def getImgData():
     getImageNames()
     os.chdir("./static/img")
     for x in listImgNames:
-        if ".png" in x:
+        if ".png" in x or ".jpg" in x:
             with open(x,"rb") as z:
                 data= z.read()
                 insertImageTable(imgName= x, img=data)
                 print("{} Added to Db".format(x))
-        elif ".jpg" in x:
-            with open(x, "rb") as z:
-                data = z.read()
-                insertImageTable(imgName= x, img=data)
-                print("{} Added to Db".format(x))
+        # elif ".jpg" in x:
+        #     with open(x, "rb") as z:
+        #         data = z.read()
+        #         insertImageTable(imgName= x, img=data)
+        #         print("{} Added to Db".format(x))
 
 # Inserts name & imgdata into table.
 def insertImageTable(imgName, img):
-    conn = sqlite3.connect("database.db")
-    cursor = conn.cursor()
-    cursor.execute("""CREATE TABLE IF NOT EXISTS testInsertImages(name TEXT, image BLOP)""")
-    cursor.execute("""INSERT INTO testInsertImages(name, image) VALUES(?,?)""",(imgName, img))
-    conn.commit()
-    cursor.close()
-    conn.close()
+    os.chdir("..")
+    os.chdir("..")
+    with create_connection("database.db") as conn:
+        cursor = conn.cursor()
+        cursor.execute("""CREATE TABLE IF NOT EXISTS testInsertImages(name TEXT, image BLOP)""")
+        cursor.execute("""INSERT INTO testInsertImages(name, image) VALUES(?,?)""",(imgName, img))
+        conn.commit()
+        cursor.close()
+    os.chdir("./static/img")
+
 
 if __name__ == '__main__':
     #with create_connection("database.db") as db: #uncomment to drop table
