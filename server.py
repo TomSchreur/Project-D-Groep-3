@@ -4,6 +4,7 @@ from feature_extractor import FeatureExtractor
 from datetime import datetime
 from flask import Flask, request, render_template
 from pathlib import Path
+import os
 
 app = Flask(__name__)
 
@@ -14,7 +15,12 @@ img_paths = []
 ## Change statement -> all images.
 for feature_path in Path("./static/feature").glob("*.npy"):
     features.append(np.load(feature_path))
-    img_paths.append(Path("./static/img") / (feature_path.stem + ".png"))
+    if os.path.exists("./static/img/" + feature_path.stem + ".png"):
+        img_path = Path("./static/img") / (feature_path.stem + ".png")
+    else:
+        img_path = Path("./static/img") / (feature_path.stem + ".jpg")
+    img_paths.append(img_path)
+    #img_paths.append(Path("./static/img") / (feature_path.stem + ".png"))
 features = np.array(features)
 
 
