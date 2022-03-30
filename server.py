@@ -1,10 +1,11 @@
 import numpy as np
+import os
 from PIL import Image
 from feature_extractor import FeatureExtractor
 from datetime import datetime
 from flask import Flask, request, render_template
 from pathlib import Path
-
+from database_manual import selectProducts
 app = Flask(__name__)
 
 # Read image features
@@ -37,7 +38,20 @@ def index():
         query = fe.extract(img)
         dists = np.linalg.norm(features-query, axis=1)  # L2 distances to features
         ids = np.argsort(dists)[:30]  # Top 30 results
-        scores = [(dists[id], img_paths[id]) for id in ids]
+
+        # get names, to search for products in db.
+        temp= [(img_paths[id]) for id in ids]
+        listpaths = []
+        for i in temp:
+            listpaths.append(os.path.basename(i))
+        queryProduct = selectProducts(listpaths)
+        ProductPrices = [queryProduct[i][2] for i in range(30)]
+
+        scores = [(dists[id], img_paths[id], os.path.basename(img_paths[id])) for id in ids]
+        # Add prices, to tuple
+        for i in range(30):
+            scores[i] = (scores[i] + (ProductPrices[i],))
+        
 
         return render_template('index.html',
                                query_path=uploaded_img_path,
