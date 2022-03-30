@@ -5,17 +5,20 @@ from feature_extractor import FeatureExtractor
 from datetime import datetime
 from flask import Flask, request, render_template
 from pathlib import Path
-from database_manual import selectProducts
+from database_manual import selectProducts, selectallProducts
 app = Flask(__name__)
 
 # Read image features
 fe = FeatureExtractor()
 features = []
 img_paths = []
-## Change statement -> all images.
-for feature_path in Path("./static/feature").glob("*.npy"):
-    features.append(np.load(feature_path))
-    img_paths.append(Path("./static/img") / (feature_path.stem + ".png"))
+img_names = []
+
+#gets all necessary data from db
+for product in selectallProducts():
+    features.append(np.load(product.df_path))
+    img_paths.append(product.image_path)
+    img_names.append(product.name)
 features = np.array(features)
 
 
@@ -45,9 +48,9 @@ def index():
         for i in temp:
             listpaths.append(os.path.basename(i))
         queryProduct = selectProducts(listpaths)
-        ProductPrices = [queryProduct[i][2] for i in range(30)]
+        ProductPrices = [queryProduct[i][4] for i in range(30)]
 
-        scores = [(dists[id], img_paths[id], os.path.basename(img_paths[id])) for id in ids]
+        scores = [(dists[id], img_paths[id], img_names[id]) for id in ids]
         # Add prices, to tuple
         for i in range(30):
             scores[i] = (scores[i] + (ProductPrices[i],))
