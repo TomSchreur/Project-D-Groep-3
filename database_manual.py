@@ -1,6 +1,6 @@
 import sqlite3
 import os
-import sys
+from Product_class import Product
 from sqlite3 import Error
 
 #weet niet zeker of sqlite via pip moet gebeuren (bij mij niet). zoja, toevoegen bij requirements.txt
@@ -21,20 +21,24 @@ def createtable():
         cur.execute(""" CREATE TABLE IF NOT EXISTS Products (
             id integer PRIMARY KEY AUTOINCREMENT, 
             name text NOT NULL UNIQUE, 
+            image_path text NOT NULL UNIQUE,
+            df_path text NOT NULL UNIQUE,
             price real NOT NULL,
-            category text NOT NULL); """)#temporary string for image
+            category text NOT NULL); """)
 
-def insertintotable(cur, image, name, category):
+def insertintotable(cur, name, image_path, df_path, price, category):
     with create_connection("database.db") as db:
         cur = db.cursor()
-        cur.execute(""" INSERT INTO Products (name,price,category) 
-            VALUES(?,?,?);""",(image,name,category))#id is autoincrement, so doesn't need to be defined
+        cur.execute(""" INSERT INTO Products (name, image_path, df_path, price, category) 
+            VALUES(?,?,?,?,?);""",(name, image_path, df_path, price, category))#id is autoincrement, so doesn't need to be defined
 
-def selectfromtable():
+def selectallProducts():
     with create_connection("database.db") as db:
         cur = db.cursor()
         cur.execute("""SELECT * FROM Products;""")
         rows = cur.fetchall()
+        for i in range(len(rows)):
+            rows[i] = Product(*rows[i])
         return rows
 
 # Selecteert producten uit db, die dezelfde naam hebben als de top30 vergeleken afbeeldingen
@@ -43,7 +47,7 @@ def selectProducts(names):
     with create_connection("database.db") as db:
         cur = db.cursor()
         for n in names:
-            cur.execute("SELECT * from Products WHERE name=(?);",(n,))
+            cur.execute("SELECT * from Products WHERE name=(?);",(os.path.splitext(n)[0],))
             rows = cur.fetchall()
             if rows == []:
                 continue
@@ -65,7 +69,17 @@ def insertProductTable(dir):
     conn = sqlite3.connect("database.db")
     cursor = conn.cursor()
     for p in paths:
-        cursor.execute("""INSERT OR IGNORE INTO Products(name, price, category) VALUES(?,?,?)""",(p, 50, 'Sweater'))
+        name = os.path.splitext(p)[0]
+        image_path = dir + "/" + p
+        df_path = "./static/feature/" + name + ".npy"
+        price = 50.0
+        category = ""
+        categories = ["hoodie", "sport pants", "sweater", "Jeans", "shirt"]
+        for cat in categories:
+            if cat in name:
+                category = cat
+                continue
+        cursor.execute("""INSERT OR IGNORE INTO Products (name, image_path, df_path, price, category) VALUES(?,?,?,?,?)""",(name, image_path, df_path, price, category))
     conn.commit()
     cursor.close()
     conn.close()
@@ -76,8 +90,9 @@ if __name__ == '__main__':
     #with create_connection("database.db") as db: #uncomment to drop table
     #   c = db.cursor()
     #   c.execute("""DROP TABLE Products;""")
-    #createtable()
+    createtable()
     #insertintotable('image', 'image_name', 20.5)
-    selectfromtable()
-    #getImgData()
+    insertProductTable('./static/img')
     #insertProductTable('./static/zwart_truien')
+    #selectallProducts()
+    #getImgData()
