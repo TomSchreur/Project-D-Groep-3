@@ -11,14 +11,11 @@ app = Flask(__name__)
 # Read image features
 fe = FeatureExtractor()
 features = []
-img_paths = []
-img_names = []
 
+Products = selectallProducts()
 #gets all necessary data from db
-for product in selectallProducts():
+for product in Products:
     features.append(np.load(product.df_path))
-    img_paths.append(product.image_path)
-    img_names.append(product.name)
 features = np.array(features)
 
 
@@ -42,19 +39,7 @@ def index():
         dists = np.linalg.norm(features-query, axis=1)  # L2 distances to features
         ids = np.argsort(dists)[:30]  # Top 30 results
 
-        # get names, to search for products in db.
-        temp= [(img_paths[id]) for id in ids]
-        listpaths = []
-        for i in temp:
-            listpaths.append(os.path.basename(i))
-        queryProduct = selectProducts(listpaths)
-        ProductPrices = [queryProduct[i][4] for i in range(30)]
-
-        scores = [(dists[id], img_paths[id], img_names[id]) for id in ids]
-        # Add prices, to tuple
-        for i in range(30):
-            scores[i] = (scores[i] + (ProductPrices[i],))
-        
+        scores = [(dists[id], Products[id].image_path, Products[id].name, Products[id].getPrice()) for id in ids]
 
         return render_template('index.html',
                                query_path=uploaded_img_path,
@@ -89,7 +74,7 @@ def highContrastSwitch():
         query = fe.extract(img)
         dists = np.linalg.norm(features-query, axis=1)  # L2 distances to features
         ids = np.argsort(dists)[:30]  # Top 30 results
-        scores = [(dists[id], img_paths[id]) for id in ids]
+        scores = [(dists[id], Products[id].image_path) for id in ids]
 
         return render_template('highcontrastIndex.html',
                                query_path=uploaded_img_path,
