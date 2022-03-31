@@ -1,6 +1,7 @@
 import sqlite3
 import os
 import sys
+import random
 from sqlite3 import Error
 
 #weet niet zeker of sqlite via pip moet gebeuren (bij mij niet). zoja, toevoegen bij requirements.txt
@@ -65,7 +66,8 @@ def insertProductTable(dir):
     conn = sqlite3.connect("database.db")
     cursor = conn.cursor()
     for p in paths:
-        cursor.execute("""INSERT OR IGNORE INTO Products(name, price, category) VALUES(?,?,?)""",(p, 50, 'Sweater'))
+        randomPrice= random.randint(10,60)
+        cursor.execute("""INSERT OR IGNORE INTO Products(name, price, category) VALUES(?,?,?)""",(p, randomPrice, 'White Shirt'))
     conn.commit()
     cursor.close()
     conn.close()
@@ -76,8 +78,8 @@ if __name__ == '__main__':
     #with create_connection("database.db") as db: #uncomment to drop table
     #   c = db.cursor()
     #   c.execute("""DROP TABLE Products;""")
-    #createtable()
+    createtable()
     #insertintotable('image', 'image_name', 20.5)
-    selectfromtable()
+    #selectfromtable()
     #getImgData()
-    #insertProductTable('./static/zwart_truien')
+    #insertProductTable('./static/img')
