@@ -46,11 +46,16 @@ def index():
             listpaths.append(os.path.basename(i))
         queryProduct = selectProducts(listpaths)
         ProductPrices = [queryProduct[i][2] for i in range(30)]
+        
+        pathMp3 =[]
+        for i in listpaths:
+            pathMp3.append(Path('./static/mp3files/'+i.replace('.png','.mp3')))
 
         scores = [(dists[id], img_paths[id], os.path.basename(img_paths[id])) for id in ids]
-        # Add prices, to tuple
+        # Add prices and mp3paths, to tuple
         for i in range(30):
-            scores[i] = (scores[i] + (ProductPrices[i],))
+            scores[i] = (scores[i] + (ProductPrices[i],)+(pathMp3[i],))
+
         
 
         return render_template('index.html',
