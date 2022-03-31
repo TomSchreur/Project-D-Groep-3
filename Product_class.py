@@ -13,13 +13,15 @@ class Product:
         eurostr = ""
         centstr = ""
         for i in range(len(pstr)):
-            if cents:
+            if cents and len(centstr) < 3:
                 centstr += pstr[i]
             elif pstr[i] == ".":
                 eurostr += ","
                 cents = True
-            else:
+            elif not cents:
                 eurostr += pstr[i]
+            else:
+                continue
         if len(centstr) != 2:
             if centstr == "0":
                 centstr = "-"
