@@ -75,7 +75,7 @@ def insertProductTable(dir):
         df_path = "./static/feature/" + name + ".npy"
         price = float(random.randint(10,60))
         category = ""
-        categories = ["hoodie", "sport pants", "sweater", "Jeans", "shirt"]
+        categories = ["Sweater & hoodies", "sport pants", "sweater", "Jeans", "shirt", "Sweater", "Shirt"]
         for cat in categories:
             if cat in name:
                 category = cat
