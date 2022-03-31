@@ -1,6 +1,7 @@
 import sqlite3
 import os
 from Product_class import Product
+import random
 from sqlite3 import Error
 
 #weet niet zeker of sqlite via pip moet gebeuren (bij mij niet). zoja, toevoegen bij requirements.txt
@@ -72,7 +73,7 @@ def insertProductTable(dir):
         name = os.path.splitext(p)[0]
         image_path = dir + "/" + p
         df_path = "./static/feature/" + name + ".npy"
-        price = 50.0
+        price = float(random.randint(10,60))
         category = ""
         categories = ["hoodie", "sport pants", "sweater", "Jeans", "shirt"]
         for cat in categories:
