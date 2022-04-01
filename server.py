@@ -39,7 +39,24 @@ def index():
         dists = np.linalg.norm(features-query, axis=1)  # L2 distances to features
         ids = np.argsort(dists)[:30]  # Top 30 results
 
-        scores = [(dists[id], Products[id].image_path, Products[id].name, Products[id].getPrice()) for id in ids]
+        scores = [(dists[id], Products[id].image_path, Products[id].name, Products[id].getPrice(), Products[id].tts_path) for id in ids]
+
+        # get names, to search for products in db.
+        # temp= [(img_paths[id]) for id in ids]
+        # listpaths = []
+        # for i in temp:
+        #     listpaths.append(os.path.basename(i))
+        # queryProduct = selectProducts(listpaths)
+        # ProductPrices = [queryProduct[i][2] for i in range(30)]
+        
+        # pathMp3 =[]
+        # for i in listpaths:
+        #     pathMp3.append(Path('./static/mp3files/'+i.replace('.png','.mp3')))
+
+        # scores = [(dists[id], img_paths[id], os.path.basename(img_paths[id])) for id in ids]
+        # # Add prices and mp3paths, to tuple
+        # for i in range(30):
+        #     scores[i] = (scores[i] + (ProductPrices[i],)+(pathMp3[i],))
 
         return render_template('index.html',
                                query_path=uploaded_img_path,

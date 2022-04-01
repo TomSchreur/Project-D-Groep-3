@@ -9,7 +9,6 @@
     </head>
     
     <body>
-
         <div class="container">
             <h1>Simple image search engine</h1>
             <form method="POST" enctype="multipart/form-data">
@@ -30,8 +29,11 @@
             <figure style="float: left; margin-right: 20px; margin-bottom: 20px;">
                 <img src="{{ score[1] }}" height="200px">
                 <figcaption>Comparison {{ score[0] }}</figcaption>
-                <figcaption>{{score[2]}}</figcaption>
-                <figcaption>Price: €{{score[3]}}</figcaption>               
+                <figcaption>{{ score[2] }}</figcaption>
+                <figcaption>Price: €{{score[3]}}</figcaption>  
+                <audio controls>
+                    <source src= "{{score[4]}}"/>
+
             </figure>
             {% endfor %}
         </div>
