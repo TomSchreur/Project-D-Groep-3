@@ -25,13 +25,14 @@ def createtable():
             image_path text NOT NULL UNIQUE,
             df_path text NOT NULL UNIQUE,
             price real NOT NULL,
-            category text NOT NULL); """)
+            category text NOT NULL,
+            tts_path text NOT NULL); """)
 
-def insertintotable(cur, name, image_path, df_path, price, category):
+def insertintotable(cur, name, image_path, df_path, price, category, tts_path):
     with create_connection("database.db") as db:
         cur = db.cursor()
-        cur.execute(""" INSERT INTO Products (name, image_path, df_path, price, category) 
-            VALUES(?,?,?,?,?);""",(name, image_path, df_path, price, category))#id is autoincrement, so doesn't need to be defined
+        cur.execute(""" INSERT INTO Products (name, image_path, df_path, price, category, tts_path) 
+            VALUES(?,?,?,?,?);""",(name, image_path, df_path, price, category, tts_path))#id is autoincrement, so doesn't need to be defined
 
 def selectallProducts():
     with create_connection("database.db") as db:
@@ -76,11 +77,12 @@ def insertProductTable(dir):
         price = float(random.randint(10,60))
         category = ""
         categories = ["Sweater & hoodies", "sport pants", "sweater", "Jeans", "shirt", "Sweater", "Shirt"]
+        tts_path = "./static/mp3files/" + name + ".mp3"
         for cat in categories:
             if cat in name:
                 category = cat
                 continue
-        cursor.execute("""INSERT OR IGNORE INTO Products (name, image_path, df_path, price, category) VALUES(?,?,?,?,?)""",(name, image_path, df_path, price, category))
+        cursor.execute("""INSERT OR IGNORE INTO Products (name, image_path, df_path, price, category, tts_path) VALUES(?,?,?,?,?,?)""",(name, image_path, df_path, price, category,tts_path))
     conn.commit()
     cursor.close()
     conn.close()
@@ -91,9 +93,9 @@ if __name__ == '__main__':
     #with create_connection("database.db") as db: #uncomment to drop table
     #   c = db.cursor()
     #   c.execute("""DROP TABLE Products;""")
-    createtable()
+    #createtable()
     #insertintotable('image', 'image_name', 20.5)
-    insertProductTable('./static/img')
+    #insertProductTable('./static/img')
     #insertProductTable('./static/zwart_truien')
-    #selectallProducts()
+    print(selectallProducts()[0].tts_path)
     #getImgData()
