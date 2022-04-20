@@ -6,6 +6,7 @@ from datetime import datetime
 from flask import Flask, request, render_template
 from pathlib import Path
 from database_manual import selectProducts, selectallProducts
+from TextToSpeech import cleanMp3Directory, createTempProductMp3
 app = Flask(__name__)
 
 # Read image features
@@ -17,7 +18,7 @@ Products = selectallProducts()
 for product in Products:
     features.append(np.load(product.df_path))
 features = np.array(features)
-
+cleanMp3Directory()
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -38,6 +39,14 @@ def index():
         query = fe.extract(img)
         dists = np.linalg.norm(features-query, axis=1)  # L2 distances to features
         ids = np.argsort(dists)[:30]  # Top 30 results
+      
+        # Create product mp3 files
+        for id in ids:
+            if((Products[id].name)+".mp3" in "./static/mp3files"):
+                print('Mp3 already exists')
+            else:
+                createTempProductMp3((Products[id].name), (Products[id].getPrice()),(Products[id].category))
+
 
         scores = [(dists[id], Products[id].image_path, Products[id].name, Products[id].getPrice(), Products[id].tts_path) for id in ids]
 

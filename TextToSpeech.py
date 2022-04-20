@@ -1,6 +1,7 @@
 from hashlib import new
 from gtts import gTTS
 import os
+import glob
 from database_manual import selectallProducts
 speak = "€ 55"
 language = 'en'
@@ -35,4 +36,14 @@ def createMp3():
         f=f+1
 
 
-createMp3()
+
+def createTempProductMp3(name,price,category):
+    productInf = ""
+    productInf = "The product name is: " + name + ". The price is € " + str(price) + ". The category is: " + category
+    mp3File = gTTS(text=productInf, lang=language, slow=False)
+    mp3File.save("./static/mp3files/"+ name +'.mp3')
+
+def cleanMp3Directory():
+    path =  glob.glob('./static/mp3files/*')
+    for f in path:
+        os.remove(f)
