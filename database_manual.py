@@ -3,7 +3,6 @@ import os
 from Product_class import Product
 import random
 from sqlite3 import Error
-
 #weet niet zeker of sqlite via pip moet gebeuren (bij mij niet). zoja, toevoegen bij requirements.txt
 listImgNames=[]
 
@@ -23,16 +22,18 @@ def createtable():
             id integer PRIMARY KEY AUTOINCREMENT, 
             name text NOT NULL UNIQUE, 
             image_path text NOT NULL UNIQUE,
-            df_path text NOT NULL UNIQUE,
             price real NOT NULL,
             category text NOT NULL,
-            tts_path text NOT NULL); """)
+            tts_path text NOT NULL,
+            description text NOT NULL,
+            discount real)
+            ; """)
 
-def insertintotable(cur, name, image_path, df_path, price, category, tts_path):
+def insertintotable(cur, name, image_path, price, category, tts_path, description, discount):
     with create_connection("database.db") as db:
         cur = db.cursor()
-        cur.execute(""" INSERT INTO Products (name, image_path, df_path, price, category, tts_path) 
-            VALUES(?,?,?,?,?);""",(name, image_path, df_path, price, category, tts_path))#id is autoincrement, so doesn't need to be defined
+        cur.execute(""" INSERT INTO Products (name, image_path, price, category, tts_path, description, discount) 
+            VALUES(?,?,?,?,?,?,?);""",(name, image_path, price, category, tts_path, description, discount)) #id is autoincrement, so doesn't need to be defined
 
 def selectallProducts():
     with create_connection("database.db") as db:
@@ -73,7 +74,6 @@ def insertProductTable(dir):
     for p in paths:
         name = os.path.splitext(p)[0]
         image_path = dir + "/" + p
-        df_path = "./static/feature/" + name + ".npy"
         price = float(random.randint(10,60))
         category = ""
         categories = ["Sweater & hoodies", "sport pants", "sweater", "Jeans", "shirt", "Sweater", "Shirt"]
@@ -82,7 +82,9 @@ def insertProductTable(dir):
             if cat in name:
                 category = cat
                 continue
-        cursor.execute("""INSERT OR IGNORE INTO Products (name, image_path, df_path, price, category, tts_path) VALUES(?,?,?,?,?,?)""",(name, image_path, df_path, price, category,tts_path))
+        description = "" # is empty rn, make this generate dynamically depending on product
+        discount = 0.1 # can be anything above 0.0
+        cursor.execute("""INSERT OR IGNORE INTO Products (name, image_path, price, category, tts_path, description, discount) VALUES(?,?,?,?,?,?,?)""",(name, image_path, price, category,tts_path, description, discount))
     conn.commit()
     cursor.close()
     conn.close()
@@ -90,12 +92,9 @@ def insertProductTable(dir):
 
 
 if __name__ == '__main__':
-    #with create_connection("database.db") as db: #uncomment to drop table
-    #   c = db.cursor()
-    #   c.execute("""DROP TABLE Products;""")
-    #createtable()
-    #insertintotable('image', 'image_name', 20.5)
-    #insertProductTable('./static/img')
-    #insertProductTable('./static/zwart_truien')
-    print(selectallProducts()[0].tts_path)
-    #getImgData()
+    with create_connection("database.db") as db: #uncomment to drop table
+        c = db.cursor()
+        c.execute("""DROP TABLE Products;""")
+    createtable()
+    insertProductTable('./static/img')
+    #print(selectallProducts()[0].tts_path)
