@@ -1,19 +1,30 @@
-import database_manual
-
 class Product:
-    def __init__(self, id, image, name, price): #creates a Product object with given values
+    def __init__(self, id, name, image_path, df_path, price, category, tts_path): #creates a Product object with given values
         self.id = id
-        self.image = image
         self.name = name
+        self.image_path = image_path
+        self.df_path = df_path
         self.price = price
+        self.category = category
+        self.tts_path = tts_path
     
-    def print_info(self): #prints all values of Product (mainly for testing)
-        print(f"{self.id} {self.image} {self.name} {self.price}")
-
-def db_to_Products(): #turns the result of a select query to the db into Product objects
-    rows = database_manual.selectfromtable()
-    for row in rows:
-        Product(*row).print_info()
-
-db_to_Products()
-        
+    def getPrice(self):
+        pstr = str(self.price)
+        cents = False
+        eurostr = ""
+        centstr = ""
+        for i in range(len(pstr)):
+            if cents and len(centstr) < 3:
+                centstr += pstr[i]
+            elif pstr[i] == ".":
+                eurostr += ","
+                cents = True
+            elif not cents:
+                eurostr += pstr[i]
+            else:
+                continue
+        if len(centstr) != 2:
+            centstr += "0"
+        if centstr == "00":
+            centstr = "-"
+        return eurostr + centstr

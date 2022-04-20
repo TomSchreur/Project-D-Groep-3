@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+    <head><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></head>
+    <head><script src="C:\Users\ibrah\OneDrive\Documenten\GitHub\Project-D-Groep-3\server.py"></script></head>
+    
+    <head>
+        <button onclick="window.location.href='/'"> Switch to normal contrast </button>
+    </head>>
+
+    <body style="background-color:black;">
+        <div class="container">
+
+            <h1 style="color: yellow">Simple image search engine</h1>
+            <form method="POST" enctype="multipart/form-data">
+                <input type="file" style = "color: rgb(2, 250, 2)" name="query_img"><br>
+
+                {%if noPictureSelected %}
+                <p style="color:#00e1ff">{{noPictureSelected}}</p>
+                {% endif%}
+
+                <input type="submit">
+            </form>
+
+            <h2 style="color: yellow">Query:</h2>
+            {% if query_path %}
+            <img src="{{ query_path }}" width="300px">
+            {% endif %}
+            <h2 style="color: yellow">Results:</h2>
+            {% for score in scores %}
+            <figure style="color:#00e1ff" style="float: left; margin-right: 20px; margin-bottom: 20px;">
+                <img src="{{ score[1] }}" height="200px">
+                <figcaption>{{ score[0] }}</figcaption>
+            </figure>
+            {% endfor %}
+        </div>
+    </body>
+</html>
+
