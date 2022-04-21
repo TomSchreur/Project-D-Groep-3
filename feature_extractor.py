@@ -2,7 +2,7 @@ from tensorflow.keras.preprocessing import image
 from tensorflow.keras.applications.vgg16 import VGG16, preprocess_input
 from tensorflow.keras.models import Model
 import numpy as np
-from database_manual import selectProducts, selectallProducts
+from database_manual import selectProducts, selectallFromTable
 import threading
 from PIL import Image
 
@@ -32,7 +32,7 @@ class FeatureExtractor:
 
 class DbFeatures:
     def __init__(self):
-        self.products = selectallProducts()
+        self.products = selectallFromTable("Products")
         self.lock = threading.Lock()
         self.features = []
         self.fe = FeatureExtractor()

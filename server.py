@@ -2,33 +2,30 @@ import numpy as np
 import os
 import threading
 from PIL import Image
+import shutil
 from feature_extractor import FeatureExtractor, DbFeatures
 from datetime import datetime
 from flask import Flask, request, render_template
 from pathlib import Path
-from database_manual import selectProducts, selectallProducts
+from database_manual import selectProducts, selectallFromTable
 from time import perf_counter
 app = Flask(__name__)
 
-# Read image features
-fe = FeatureExtractor()
-features = DbFeatures()
-featureThreads = list()
 
-start_time = perf_counter()
-for i in range(5):
-    x = threading.Thread(target=features.getFeature, args=(i,))
-    featureThreads.append(x)
-    x.start()
-for y in featureThreads:
-    y.join()
-features.features = np.array(features.features)
-end_time = perf_counter()
-print("Total time: ", end_time - start_time)
+fe = FeatureExtractor()
+
+# grab features from static/featureStorage.npy
+with open('static/featureStorage.npy', 'rb') as fs:
+    features = np.load(fs)
+Products = selectallFromTable("Products")
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
+        # removes directory 'static/uploaded' & file contained inside
+        # uploaded contains the last-uploaded image by user
+        shutil.rmtree('static/uploaded')
+        os.mkdir('static/uploaded')
         file = request.files['query_img']
 
         noPictureSelected = 'Geen bestand geselecteerd.'
@@ -43,10 +40,10 @@ def index():
 
         # Run search
         query = fe.extract(img)
-        dists = np.linalg.norm(features.features-query, axis=1)  # L2 distances to features
+        dists = np.linalg.norm(features-query, axis=1)  # L2 distances to features
         ids = np.argsort(dists)[:30]  # Top 30 results
 
-        scores = [(dists[id], features.products[id].image_path, features.products[id].name, features.products[id].getPrice(), features.products[id].tts_path) for id in ids]
+        scores = [(dists[id], Products[id].image_path, Products[id].name, Products[id].getPrice(), Products[id].tts_path) for id in ids]
 
         # get names, to search for products in db.
         # temp= [(img_paths[id]) for id in ids]
@@ -82,6 +79,7 @@ def index():
 @app.route('/high-contrast/', methods=['GET', 'POST'])
 def highContrastSwitch():
     if request.method == 'POST':
+        os.remove('static/uploaded')
         file = request.files['query_img']
 
         noPictureSelected = 'Geen bestand geselecteerd.'

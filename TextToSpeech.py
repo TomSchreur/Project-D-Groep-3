@@ -1,13 +1,13 @@
 from hashlib import new
 from gtts import gTTS
 import os
-from database_manual import selectallProducts
+from database_manual import selectallFromTable
 speak = "€ 55"
 language = 'en'
 
 output= gTTS(text=speak, lang= language, slow=False)
 
-productdetails = selectallProducts()
+productdetails = selectallFromTable("Products")
 mp3details = []
 substring= []
 
