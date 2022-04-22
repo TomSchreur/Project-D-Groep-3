@@ -9,6 +9,8 @@ from flask import Flask, request, render_template
 from pathlib import Path
 from database_manual import selectProducts, selectallFromTable
 from time import perf_counter
+from DbClasses import getPrice
+from TextToSpeech import createTempProductMp3
 app = Flask(__name__)
 
 
@@ -17,6 +19,8 @@ fe = FeatureExtractor()
 # grab features from static/featureStorage.npy
 with open('static/featureStorage.npy', 'rb') as fs:
     features = np.load(fs)
+
+# get products from DB
 Products = selectallFromTable("Products")
 
 @app.route('/', methods=['GET', 'POST'])
@@ -43,7 +47,14 @@ def index():
         dists = np.linalg.norm(features-query, axis=1)  # L2 distances to features
         ids = np.argsort(dists)[:30]  # Top 30 results
 
-        scores = [(dists[id], Products[id].image_path, Products[id].name, Products[id].getPrice(), Products[id].tts_path) for id in ids]
+        for id in ids:
+            if((Products[id].name)+".mp3" in "./static/mp3files"):
+                print('Mp3 already exists')
+            else:
+                createTempProductMp3(Products[id].description)
+
+        # establish scores to pass to HTML
+        scores = [(dists[id], Products[id].image_path, Products[id].name, getPrice(Products[id].price, Products[id].price), Products[id].tts_path) for id in ids]
 
         # get names, to search for products in db.
         # temp= [(img_paths[id]) for id in ids]

@@ -8,36 +8,34 @@ class Product:
         self.tts_path = tts_path
         self.description = description
         self.discount = discount
-    
-    def getPrice(self):
-        newPrice = self.price * (1 - self.discount)
-        pstrRounded = str(round(newPrice, 2))
-        pstr = str(newPrice)
-        print(pstr)
-        print(pstrRounded)
-        print("----------------")
-        cents = False
-        eurostr = ""
-        centstr = ""
-        for i in range(len(pstr)):
-            if cents and len(centstr) < 2:
-                centstr += pstr[i]
-            elif pstr[i] == ".":
-                eurostr += ","
-                cents = True
-            elif not cents:
-                eurostr += pstr[i]
-            else:
-                continue
-        if len(centstr) != 2:
-            centstr += "0"
-        if centstr == "00":
-            centstr = "-"
-        return eurostr + centstr
-    
 
 class Category:
     def __init__(self, id, product_type, category):
         self.id = id
         self.product_type = product_type
         self.category = category
+
+def getPrice(price, discount = 0):
+    newPrice = price * (1 - discount)
+    pstrRounded = str(round(newPrice, 2))
+    pstr = str(newPrice)
+    cents = False
+    decimalCount = 0
+    result = ""
+    for i in range(len(pstrRounded)):
+        if cents and pstrRounded[i] != ".":
+            result += pstrRounded[i]
+            decimalCount = decimalCount + 1
+        elif pstrRounded[i] == ".":
+            result += ","
+            cents = True
+        elif not cents:
+            result += pstrRounded[i]
+        else:
+            break
+    if decimalCount == 1:
+        result += "0"
+    cents = result[-2:]
+    if cents == "00":
+        result = result.replace(cents, "-", 1)
+    return result

@@ -1,6 +1,6 @@
 import sqlite3
 import os
-from DbClasses import Product, Category
+from DbClasses import Product, Category, getPrice
 import random
 from sqlite3 import Error
 #weet niet zeker of sqlite via pip moet gebeuren (bij mij niet). zoja, toevoegen bij requirements.txt
@@ -96,9 +96,12 @@ def insertProductTable(dir):
         image_path = dir + "/" + p
         price = float(random.randint(10,60))
         categories = selectallFromTable("Categories")
+        discount = round(random.random(), 2) # can be anything above 0.0; currently a random float (0.xx)
+        description = ""
         for category in categories:
             if category.category.upper() in name.upper():
                 category_id = category.id
+                description = "The product name is: " + name + ". The price is € " + getPrice(price,discount) + ". The product type is: " + category.product_type + " of category " + category.category
                 break
         # category = ""
         # categories = ["Sweater & hoodies", "Sport Pants", "Sweater", "Jeans", "Shirt"]
@@ -107,8 +110,6 @@ def insertProductTable(dir):
         #         category = cat.upper()
         #         continue
         tts_path = "./static/mp3files/" + name + ".mp3"
-        description = "" # is empty rn, make this generate dynamically depending on product
-        discount = round(random.random(), 2) # can be anything above 0.0; currently a random float (0.xx)
         cursor.execute("""INSERT OR IGNORE INTO Products (name, image_path, price, category_id, tts_path, description, discount) VALUES(?,?,?,?,?,?,?)""", (name, image_path, price, category_id, tts_path, description, discount))
     conn.commit()
     cursor.close()
@@ -116,11 +117,11 @@ def insertProductTable(dir):
 
 # "Sweater & hoodies", "sport pants", "Sweater", "Jeans", "Shirt"
 def insertCategoryTable(dir):
-    categories = ["Sweater & hoodies", "Sport Pants", "Sweater", "Jeans", "Shirt"] # expand later (make sure categories containing later categories like 'sweater & hoodies' and 'sweater' are earlier)
+    categories = ["Sweater & Hoodies", "Sport Pants", "Sweater", "Jeans", "Shirt"] # expand later (make sure categories containing later categories like 'sweater & hoodies' and 'sweater' are earlier)
     conn = sqlite3.connect("database.db")
     cursor = conn.cursor()
     for c in categories:
-        cursor.execute("""INSERT OR IGNORE INTO Categories (product_type, category) VALUES(?,?)""", ("Clothing", c.upper()))
+        cursor.execute("""INSERT OR IGNORE INTO Categories (product_type, category) VALUES(?,?)""", ("Clothing", c))
     conn.commit()
     cursor.close()
     conn.close()
