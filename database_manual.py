@@ -96,7 +96,10 @@ def insertProductTable(dir):
         image_path = dir + "/" + p
         price = float(random.randint(10,60))
         categories = selectallFromTable("Categories")
-        discount = round(random.random(), 2) # can be anything above 0.0; currently a random float (0.xx)
+        maxDiscount = 0.6
+        discount = 1.0
+        while discount > maxDiscount:
+            discount = round(random.random(), 2) # can be anything above 0.0; currently a random float (0.xx)
         description = ""
         for category in categories:
             if category.category.upper() in name.upper():
