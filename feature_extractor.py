@@ -2,6 +2,9 @@ from tensorflow.keras.preprocessing import image
 from tensorflow.keras.applications.vgg16 import VGG16, preprocess_input
 from tensorflow.keras.models import Model
 import numpy as np
+from database_manual import selectProducts, selectallFromTable
+import threading
+from PIL import Image
 
 # See https://keras.io/api/applications/ for details
 
@@ -27,3 +30,20 @@ class FeatureExtractor:
         feature = self.model.predict(x)[0]  # (1, 4096) -> (4096, )
         return feature / np.linalg.norm(feature)  # Normalize
 
+class DbFeatures:
+    def __init__(self):
+        self.products = selectallFromTable("Products")
+        self.lock = threading.Lock()
+        self.features = []
+        self.fe = FeatureExtractor()
+        self.productCount = 0
+    
+    def getFeature(self, threadId):
+        while self.productCount < len(self.products):
+            with self.lock:
+                product = self.products[self.productCount]
+                self.productCount = self.productCount + 1
+            feature = self.fe.extract(img = Image.open(product.image_path))
+            with self.lock:
+                self.features.append(feature)
+                print("loading: ", product.id, " using thread no. ", threadId)

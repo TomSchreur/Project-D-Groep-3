@@ -1,13 +1,26 @@
 from PIL import Image
-from feature_extractor import FeatureExtractor
+from feature_extractor import DbFeatures
+from database_manual import selectallFromTable
+from time import perf_counter
 from pathlib import Path
 import numpy as np
+import threading
 
 if __name__ == '__main__':
-    fe = FeatureExtractor()
-    ## Change statement, to look for all image extensions
-    for img_path in sorted(Path("./static/img").glob("*.png")):
-        print(img_path)  # e.g., ./static/img/xxx.jpg
-        feature = fe.extract(img=Image.open(img_path))
-        feature_path = Path("./static/feature") / (img_path.stem + ".npy")  # e.g., ./static/feature/xxx.npy
-        np.save(feature_path, feature)
+    products = selectallFromTable("Products")
+    featureClass = DbFeatures()
+    featureThreads = list()
+
+    start_time = perf_counter()
+    for i in range(5):
+        x = threading.Thread(target=featureClass.getFeature, args=(i,))
+        featureThreads.append(x)
+        x.start()
+    for y in featureThreads:
+        y.join()
+    end_time = perf_counter()
+    print("Total time: ", end_time - start_time)
+    featureClass.features = np.array(featureClass.features)
+
+    with open('static/featureStorage.npy', 'wb+') as fs:
+        np.save(fs, featureClass.features)

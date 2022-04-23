@@ -1,11 +1,23 @@
 <!doctype html>
 <html>
-    <head><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></head>
+    <head><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="C:\Users\ibrah\OneDrive\Documenten\GitHub\Project-D-Groep-3\server.py"></script>
+    </head>
+    
+    <head>
+        <button onclick="window.location.href='/high-contrast/'">switch to high contrast</button>
+    </head>
+    
     <body>
         <div class="container">
             <h1>Simple image search engine</h1>
             <form method="POST" enctype="multipart/form-data">
                 <input type="file" name="query_img"><br>
+
+                {%if noPictureSelected %}
+                <p style="color:red">{{noPictureSelected}}</p>
+                {% endif%}
+            
                 <input type="submit">
             </form>
             <h2>Query:</h2>
@@ -16,7 +28,12 @@
             {% for score in scores %}
             <figure style="float: left; margin-right: 20px; margin-bottom: 20px;">
                 <img src="{{ score[1] }}" height="200px">
-                <figcaption>{{ score[0] }}</figcaption>
+                <figcaption>Comparison {{ score[0] }}</figcaption>
+                <figcaption>{{ score[2] }}</figcaption>
+                <figcaption>Price: €{{score[3]}}</figcaption>  
+                <audio controls>
+                    <source src= "{{score[4]}}"/>
+
             </figure>
             {% endfor %}
         </div>
