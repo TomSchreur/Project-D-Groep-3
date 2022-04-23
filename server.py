@@ -51,10 +51,10 @@ def index():
             if((Products[id].name)+".mp3" in "./static/mp3files"):
                 print('Mp3 already exists')
             else:
-                createTempProductMp3(Products[id].description)
+                createTempProductMp3(Products[id].description, Products[id].name)
 
         # establish scores to pass to HTML
-        scores = [(dists[id], Products[id].image_path, Products[id].name, getPrice(Products[id].price, Products[id].price), Products[id].tts_path) for id in ids]
+        scores = [(dists[id], Products[id].image_path, Products[id].name, getPrice(Products[id].price, Products[id].discount), Products[id].tts_path) for id in ids]
 
         # get names, to search for products in db.
         # temp= [(img_paths[id]) for id in ids]
