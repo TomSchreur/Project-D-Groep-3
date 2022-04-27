@@ -2,36 +2,51 @@
 <html>
     <head><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></head>
     <head><script src="C:\Users\ibrah\OneDrive\Documenten\GitHub\Project-D-Groep-3\server.py"></script></head>
-    
-    <head>
-        <button onclick="window.location.href='/'"> Switch to normal contrast </button>
-    </head>>
 
     <body style="background-color:black;">
         <div class="container">
 
-            <h1 style="color: yellow">Simple image search engine</h1>
-            <form method="POST" enctype="multipart/form-data">
-                <input type="file" style = "color: rgb(2, 250, 2)" name="query_img"><br>
+            <button style="font-size: 1.35em; border-color: rgb(0, 229, 255); color:rgb(0, 229, 255); background-color: black" onclick="window.location.href='/'"> Switch to normal contrast </button>
+
+            <h1 style="font-size: 2.85em; color: yellow">Simple image search engine</h1>
+            
+            <form method="POST" style="color:#00ff1a" enctype="multipart/form-data">
+                <input type="file" name="query_img"><br>
 
                 {%if noPictureSelected %}
-                <p style="color:#00e1ff">{{noPictureSelected}}</p>
+                <p style="font-size: 2em; color:#00ff1a">{{noPictureSelected}}</p>
                 {% endif%}
 
-                <input type="submit">
+                <input style="font-size: 1.35em; border-color: rgb(0, 229, 255); color:rgb(0, 229, 255); background-color: black" type="submit">
             </form>
 
-            <h2 style="color: yellow">Query:</h2>
+            <h2 style="font-size: 2.85em; color: yellow">Query:</h2>
             {% if query_path %}
             <img src="{{ query_path }}" width="300px">
             {% endif %}
-            <h2 style="color: yellow">Results:</h2>
+            <h2 style="font-size: 2.85em; color: yellow">Results:</h2>
             {% for score in scores %}
-            <figure style="color:#00e1ff" style="float: left; margin-right: 20px; margin-bottom: 20px;">
-                <img src="{{ score[1] }}" height="200px">
-                <figcaption>{{ score[0] }}</figcaption>
+            <figure style="color:#00ff1a" style="float: left; margin-right: 20px; margin-bottom: 20px;">
+                <img id ="{{score[4]}}" onmouseover= play(this.id) onmouseout="pause()" src="{{ score[1] }}"  height="200px"> 
+                <figcaption>Comparison {{ score[0] }}</figcaption>
+                <figcaption>{{ score[2] }}</figcaption>
+                <figcaption>Price: €{{score[3]}}</figcaption>  
+                <audio>
+                    <source src= "{{score[4]}}"/>
+                </audio>
             </figure>
+            
             {% endfor %}
+            <script type="text/javascript">
+                var product= Audio;
+                function play(id){
+                    product = new Audio(id);
+                        product.play();
+                }
+                function pause(){
+                    product.pause();
+                }
+            </script>
         </div>
     </body>
 </html>

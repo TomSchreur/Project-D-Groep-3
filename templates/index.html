@@ -3,17 +3,16 @@
     <head><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <script src="C:\Users\ibrah\OneDrive\Documenten\GitHub\Project-D-Groep-3\server.py"></script>
     </head>
-    
-    <head>
-        <button onclick="window.location.href='/high-contrast/'">switch to high contrast</button>
-    </head>
-    
+
     <body>
         <div class="container">
+
+            <button onclick="window.location.href='/high-contrast/'">switch to high contrast</button>
+            
             <h1>Simple image search engine</h1>
             <form method="POST" enctype="multipart/form-data">
                 <input type="file" name="query_img"><br>
-
+ 
                 {%if noPictureSelected %}
                 <p style="color:red">{{noPictureSelected}}</p>
                 {% endif%}
@@ -35,6 +34,7 @@
                     <source src= "{{score[4]}}"/>
                 </audio>
             </figure>
+            
             {% endfor %}
             <script type="text/javascript">
                 var product= Audio;
