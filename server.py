@@ -152,11 +152,8 @@ def highContrastSwitch():
         query = fe.extract(img)
         dists = np.linalg.norm(features-query, axis=1)  # L2 distances to features
         ids = np.argsort(dists)[:30]  # Top 30 results
-<<<<<<< HEAD
-=======
         scores = [(dists[id], features.products[id].image_path) for id in ids]
         session["scores"] = scores
->>>>>>> main
 
         for id in ids:
             if((Products[id].name)+".mp3" in "./static/mp3files"):
@@ -188,14 +185,7 @@ def highContrastSwitch():
                                query_path=uploaded_img_path,
                                scores=scores)
     else:
-<<<<<<< HEAD
         return render_template('highContrastIndex.html')  
-=======
-        return render_template('highContrastIndex.html') 
-
-
-
->>>>>>> main
 
 if __name__=="__main__":
     app.run("0.0.0.0")
