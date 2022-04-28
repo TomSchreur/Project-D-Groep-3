@@ -1,11 +1,16 @@
 import numpy as np
 import os
+import threading
 from PIL import Image
-from feature_extractor import FeatureExtractor
+import shutil
+from feature_extractor import FeatureExtractor, DbFeatures
 from datetime import datetime
 from flask import Flask, request, render_template, url_for, session
 from pathlib import Path
-from database_manual import selectProducts, selectallProducts
+from database_manual import selectProducts, selectallFromTable
+from time import perf_counter
+from DbClasses import getPrice
+from TextToSpeech import createTempProductMp3
 app = Flask(__name__)
 
 #session data encryptionkey
@@ -13,23 +18,22 @@ app.secret_key = "hello"
 
 # Read image features
 fe = FeatureExtractor()
-features = []
 
-global item_amount
-global img2
-global uploaded_img_path
+# grab features from static/featureStorage.npy
+with open('static/featureStorage.npy', 'rb') as fs:
+    features = np.load(fs)
 
-Products = selectallProducts()
-#gets all necessary data from db
-for product in Products:
-    features.append(np.load(product.df_path))
-features = np.array(features)
-
+# get products from DB
+Products = selectallFromTable("Products")
 
 @app.route('/', methods=['GET', 'POST',])
 def index():
     item_amount = 30
     if request.method == 'POST':
+        # removes directory 'static/uploaded' & file contained inside
+        # uploaded contains the last-uploaded image by user
+        shutil.rmtree('static/uploaded')
+        os.mkdir('static/uploaded')
         file = request.files['query_img']
 
         noPictureSelected = 'Geen bestand geselecteerd.'
@@ -46,7 +50,16 @@ def index():
         query = fe.extract(img)
         dists = np.linalg.norm(features-query, axis=1)  # L2 distances to features
         ids = np.argsort(dists)[:30]  # Top 30 results
-        scores = [(dists[id], Products[id].image_path, Products[id].name, Products[id].getPrice(), Products[id].tts_path) for id in ids]
+
+        for id in ids:
+            if((Products[id].name)+".mp3" in "./static/mp3files"):
+                print('Mp3 already exists')
+            else:
+                createTempProductMp3(Products[id].description, Products[id].name)
+
+        # establish scores to pass to HTML
+        scores = [(dists[id], Products[id].image_path, Products[id].name, getPrice(Products[id].price, Products[id].discount), Products[id].tts_path) for id in ids]
+
         # get names, to search for products in db.
         # temp= [(img_paths[id]) for id in ids]
         # listpaths = []
@@ -84,6 +97,7 @@ def index():
 @app.route('/high-contrast/', methods=['GET', 'POST'])
 def highContrastSwitch():
     if request.method == 'POST':
+        os.remove('static/uploaded')
         file = request.files['query_img']
 
         noPictureSelected = 'Geen bestand geselecteerd.'
@@ -100,7 +114,7 @@ def highContrastSwitch():
         query = fe.extract(img)
         dists = np.linalg.norm(features-query, axis=1)  # L2 distances to features
         ids = np.argsort(dists)[:30]  # Top 30 results
-        scores = [(dists[id], Products[id].image_path) for id in ids]
+        scores = [(dists[id], features.products[id].image_path) for id in ids]
 
         return render_template('highcontrastIndex.html',
                                query_path=uploaded_img_path,
