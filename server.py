@@ -3,14 +3,21 @@ import os
 from PIL import Image
 from feature_extractor import FeatureExtractor
 from datetime import datetime
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, url_for, session
 from pathlib import Path
 from database_manual import selectProducts, selectallProducts
 app = Flask(__name__)
 
+#session data encryptionkey
+app.secret_key = "hello"
+
 # Read image features
 fe = FeatureExtractor()
 features = []
+
+global item_amount
+global img2
+global uploaded_img_path
 
 Products = selectallProducts()
 #gets all necessary data from db
@@ -19,8 +26,9 @@ for product in Products:
 features = np.array(features)
 
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/', methods=['GET', 'POST',])
 def index():
+    item_amount = 30
     if request.method == 'POST':
         file = request.files['query_img']
 
@@ -38,9 +46,7 @@ def index():
         query = fe.extract(img)
         dists = np.linalg.norm(features-query, axis=1)  # L2 distances to features
         ids = np.argsort(dists)[:30]  # Top 30 results
-
         scores = [(dists[id], Products[id].image_path, Products[id].name, Products[id].getPrice(), Products[id].tts_path) for id in ids]
-
         # get names, to search for products in db.
         # temp= [(img_paths[id]) for id in ids]
         # listpaths = []
@@ -60,7 +66,8 @@ def index():
 
         return render_template('index.html',
                                query_path=uploaded_img_path,
-                               scores=scores)
+                               scores=scores) 
+
     else:
         return render_template('index.html')
 
@@ -71,6 +78,8 @@ def index():
 # @app.route('/', methods=['GET', 'POST'])
 # def normalContrastSwitch():
 #     return render_template('index.html');
+
+
 
 @app.route('/high-contrast/', methods=['GET', 'POST'])
 def highContrastSwitch():
@@ -97,11 +106,8 @@ def highContrastSwitch():
                                query_path=uploaded_img_path,
                                scores=scores)
     else:
-        return render_template('highContrastIndex.html')    
+        return render_template('highContrastIndex.html') 
 
-@app.route('/')
-def normalContrastSwitch():
-  return render_template('index.html')
 
 
 if __name__=="__main__":
