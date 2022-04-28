@@ -76,12 +76,10 @@
 
 <header>
     <button class="button-up2" onclick="window.location.href='/high-contrast/'">switch to high contrast</button>
-    <button class="button-up" onclick="setTTS()">toggle Text-to-Speech</button>
+    <button class="button-up" onclick="{{tsspressed = True}}">toggle Text-to-Speech</button>
 </header>
 
 <body>
-
-
     <div class="container">
         <h1>Simple image search engine</h1>
         <form method="POST" enctype="multipart/form-data">
@@ -120,31 +118,18 @@
             </figure>
             {% endfor %}
 
-            
-            <script type="text/javascript">
-                var tts = false;
-                function setTTS(){
-                    tts = !tts;
-                    console.log(tts)
-                }
-                console.log(tts)
-        
-                
+            </div>
+            <script type="text/javascript">               
                 var product= Audio;
                 function play(id){
-                    if (tts) {
-                        product = new Audio(id);
-                            product.play();
-                    }
+                    product = new Audio(id);
+                        product.play();
                 }
                 function pause(){
-                    if (tts) {
-                        product.pause();
-                    }
+                    product.pause();
                 }
-                
             </script>
-
+            
         </div>
 
     </body>
@@ -152,7 +137,7 @@
         {% if scores %}
             <div class="showmorebutton"></div>
             <button onclick="window.location.href='/more/'" class="button">get more</button>
-        {% endif %}
+            {% endif %}
     </footer>
 </html>
 
