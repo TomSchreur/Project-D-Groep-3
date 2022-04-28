@@ -75,15 +75,15 @@
 </head>
 
 <header>
-    <button class="button-up2" onclick="window.location.href='/high-contrast/'">switch to high contrast</button>
-    <button class="button-up" onclick="setTTS()">toggle Text-to-Speech</button>
+    <button class="button-up2" onclick="window.location.href='/high-contrast/'">Switch to high contrast</button>
+    <button class="button-up" onclick="setTTS()">Toggle Text-to-Speech</button>
 </header>
 
 <body>
 
 
     <div class="container">
-        <h1>Simple image search engine</h1>
+        <h1>Visual Search</h1>
         <form method="POST" enctype="multipart/form-data">
 
             <input type="file" class="button" name="query_img" >
@@ -110,8 +110,7 @@
 
             {% for score in scores %}
             <figure style="float: left; margin-right: 20px; margin-bottom: 20px;">
-                <img id ="{{score[4]}}" onmouseover= play(this.id) onmouseout="pause()" src="{{ score[1] }}"  height="200px"> 
-                <figcaption>Comparison {{ score[0] }}</figcaption>
+                <img id ="{{score[4]}}" onmouseover= play(this.id) onmouseout="pause()" src="{{ score[1] }}"  height="200px">
                 <figcaption>{{ score[2] }}</figcaption>
                 <figcaption>Price: €{{score[3]}}</figcaption>
                 <audio>
@@ -148,12 +147,12 @@
         </div>
 
     </body>
-    <footer>
+    <!--<footer>
         {% if scores %}
             <div class="showmorebutton"></div>
             <button onclick="window.location.href='/more/'" class="button">get more</button>
         {% endif %}
-    </footer>
+    </footer>//-->
 </html>
 
 
