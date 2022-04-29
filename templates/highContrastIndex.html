@@ -99,7 +99,7 @@
             {% endif %}
 
             {% if query_path %}
-            <img src="{{ query_path }}" width="300px">
+            <img src="{{ query_path }}" height="300px">
             {% endif %}
 
             {% if scores %}
@@ -108,7 +108,7 @@
 
             {% for score in scores %}
             <figure style="font-size: 1.35em; color:#00ff1a; float: left; margin-right: 20px; margin-bottom: 20px;">
-                <img id ="{{score[4]}}" onmouseover= play(this.id) onmouseout="pause()" src="{{ score[1] }}"  height="200px"> 
+                <img id ="{{score[4]}}" onmouseover= play(this.id) onmouseout="pause()" src="{{ score[1] }}"  height="300px"> 
                 <figcaption>{{ score[2] }}</figcaption>
                 <figcaption>Price: €{{score[3]}}</figcaption>  
                 <audio>
