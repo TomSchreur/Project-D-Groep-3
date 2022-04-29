@@ -7,7 +7,6 @@ import numpy as np
 import threading
 
 if __name__ == '__main__':
-    products = selectallFromTable("Products")
     featureClass = DbFeatures()
     featureThreads = list()
 
