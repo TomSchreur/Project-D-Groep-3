@@ -39,11 +39,12 @@ class DbFeatures:
         self.productCount = 0
     
     def getFeature(self, threadId):
-        while self.productCount < len(self.products):
-            with self.lock:
+        with self.lock:
+            while self.productCount < len(self.products):
+                #with self.lock:
                 product = self.products[self.productCount]
                 self.productCount = self.productCount + 1
-            feature = self.fe.extract(img = Image.open(product.image_path))
-            with self.lock:
+                feature = self.fe.extract(img = Image.open(product.image_path))
+                #with self.lock:
                 self.features.append(feature)
                 print("loading: ", product.id, " using thread no. ", threadId)
