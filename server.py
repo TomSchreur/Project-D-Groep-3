@@ -11,10 +11,13 @@ from database_manual import selectProducts, selectallFromTable
 from time import perf_counter
 from DbClasses import getPrice
 from TextToSpeech import createTempProductMp3, Mp3Gen
+import random
+import string
+
 app = Flask(__name__)
 
 #session data encryptionkey
-app.secret_key = "hello"
+app.secret_key = ''.join(random.choice(string.ascii_letters) for i in range(10))
 
 # Read image features
 fe = FeatureExtractor()
@@ -46,6 +49,7 @@ def index():
         img = Image.open(file.stream)  # PIL image
         uploaded_img_path = "static/uploaded/" + datetime.now().isoformat().replace(":", ".") + "_" + file.filename
         img.save(uploaded_img_path)
+        uploaded_img_path = "../" + uploaded_img_path
 
         # Run search
         query = fe.extract(img)
@@ -68,11 +72,19 @@ def index():
         print("Total time mp3 gen: ", end_time - start_time)
 
         # establish scores to pass to HTML
-        scores = [(dists[id], Products[id].image_path, Products[id].name, getPrice(Products[id].price, Products[id].discount), Products[id].tts_path) for id in ids]
+        scores = [(str(dists[id]), "." + Products[id].image_path, Products[id].name, getPrice(Products[id].price, Products[id].discount), "." + Products[id].tts_path) for id in ids]
+        
+        session['uploaded_img_path'] = uploaded_img_path
+        session['scores'] = scores
 
         return render_template('index.html',
                                query_path=uploaded_img_path,
                                scores=scores) 
+
+    elif 'scores' in session and 'uploaded_img_path' in session:
+        return render_template('index.html',
+                               query_path=session['uploaded_img_path'],
+                               scores=session['scores']) 
 
     else:
         return render_template('index.html')
@@ -121,10 +133,19 @@ def highContrastSwitch():
         print("Total time mp3 gen: ", end_time - start_time)
 
         # establish scores to pass to HTML
-        scores = [(dists[id], "." + Products[id].image_path, Products[id].name, getPrice(Products[id].price, Products[id].discount), "." + Products[id].tts_path) for id in ids]
+        scores = [(str(dists[id]), "." + Products[id].image_path, Products[id].name, getPrice(Products[id].price, Products[id].discount), "." + Products[id].tts_path) for id in ids]
+        
+        session['uploaded_img_path'] = uploaded_img_path
+        session['scores'] = scores
+
         return render_template('highContrastIndex.html',
                                query_path=uploaded_img_path,
                                scores=scores)
+
+    elif 'scores' in session and 'uploaded_img_path' in session:
+        return render_template('highContrastIndex.html',
+                               query_path=session['uploaded_img_path'],
+                               scores=session['scores']) 
     else:
         return render_template('highContrastIndex.html')  
 
