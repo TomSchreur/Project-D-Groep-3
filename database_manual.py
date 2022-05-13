@@ -21,10 +21,8 @@ def createProducttable():
         cur.execute(""" CREATE TABLE IF NOT EXISTS Products (
             id integer PRIMARY KEY AUTOINCREMENT, 
             name text NOT NULL UNIQUE, 
-            image_path text NOT NULL UNIQUE,
             price real NOT NULL,
             category_id integer NOT NULL,
-            tts_path text NOT NULL,
             description text NOT NULL,
             discount real,
             FOREIGN KEY(category_id) REFERENCES Categories(id)
@@ -39,11 +37,11 @@ def createCategorytable():
             category text NOT NULL UNIQUE
             ); """)
 
-def insertintoProductstable(name, image_path, price, category_id, tts_path, description, discount):
+def insertintoProductstable(name, price, category_id, description, discount):
     with create_connection("database.db") as db:
         cur = db.cursor()
-        cur.execute(""" INSERT INTO Products (name, image_path, price, category_id, tts_path, description, discount) 
-            VALUES(?,?,?,?,?,?,?);""",(name, image_path, price, category_id, tts_path, description, discount)) #id is autoincrement, so doesn't need to be defined
+        cur.execute(""" INSERT INTO Products (name, price, category_id, description, discount) 
+            VALUES(?,?,?,?,?,?,?);""",(name, price, category_id, description, discount)) #id is autoincrement, so doesn't need to be defined
 
 def insertintoCategorytable(product_type, category):
     with create_connection("database.db") as db:
@@ -97,7 +95,7 @@ def insertProductTable(dir):
         price = float(random.randint(10,60))
         categories = selectallFromTable("Categories")
         maxDiscount = 0.6
-        discount = 1.0
+        discount = round(random.random(), 2)
         while discount > maxDiscount:
             discount = round(random.random(), 2) # can be anything above 0.0; currently a random float (0.xx)
         description = ""
@@ -113,14 +111,14 @@ def insertProductTable(dir):
         #         category = cat.upper()
         #         continue
         tts_path = "./static/mp3files/" + name + ".mp3"
-        cursor.execute("""INSERT OR IGNORE INTO Products (name, image_path, price, category_id, tts_path, description, discount) VALUES(?,?,?,?,?,?,?)""", (name, image_path, price, category_id, tts_path, description, discount))
+        cursor.execute("""INSERT OR IGNORE INTO Products (name, price, category_id, description, discount) VALUES(?,?,?,?,?,?,?)""", (name, image_path, price, category_id, tts_path, description, discount))
     conn.commit()
     cursor.close()
     conn.close()
 
 # "Sweater & hoodies", "sport pants", "Sweater", "Jeans", "Shirt"
 def insertCategoryTable(dir):
-    categories = ["Sweater & Hoodies", "Sport Pants", "Sweater", "Jeans", "Shirt"] # expand later (make sure categories containing later categories like 'sweater & hoodies' and 'sweater' are earlier)
+    categories = ["T-Shirt", "Jeans", "Socks", "Vacuum Cleaners"] # expand later (make sure categories containing later categories like 'sweater & hoodies' and 'sweater' are earlier)
     conn = sqlite3.connect("database.db")
     cursor = conn.cursor()
     for c in categories:
@@ -128,15 +126,32 @@ def insertCategoryTable(dir):
     conn.commit()
     cursor.close()
     conn.close()
-    
+
+
+def createProducts():
+    Products = []
+    Products.append(Product(0, "Nike Park 20 Trainingsbroek Heren", "https://media.s-bol.com/NxZmYWvo6NMz/442x1200.jpg", 29.99, 2, "https://www.bol.com/nl/nl/p/nike-park-20-trainingsbroek-heren-maat-m/9200000128075467/?bltgh=tLuB0HrCrOKBld6oazhFjA.sQmD8xzkeTHgwPfAqRdBzQ_0_50.52.ProductTitle", None, None))      
+    return Products
+
 
 if __name__ == '__main__':
-    with create_connection("database.db") as db: #uncomment to drop table
-        c = db.cursor()
-        c.execute("""DROP TABLE Products;""")
-        c.execute("""DROP TABLE Categories""")
-    createProducttable()
-    createCategorytable()
-    insertCategoryTable('./static/img')
-    insertProductTable('./static/img')
+    Products = createProducts()
+    for product in Products:
+        product.createDescription(selectallFromTable("Categories"))
+        print(product.product_page)
+    # with create_connection("database.db") as db: #uncomment to drop table
+    #     c = db.cursor()
+    #     c.execute("""DROP TABLE Products;""")
+    #     c.execute("""DROP TABLE Categories""")
+    # createProducttable()
+    # createCategorytable()
+    # insertCategoryTable('./static/img')
+    # insertProductTable('./static/img')
     #print(selectallFromTable()[0].tts_path)
+
+#categories = ["Sweater & Hoodies", "Sport Pants", "Sweater", "Jeans", "Shirt"] 
+#create list
+#for each product, add:
+#   Product(0, *Product Name (website)*, *image link*, *Product price*, *see categories for id*, *generate description*, *generate discount*)
+#foreach product in list, add to db
+

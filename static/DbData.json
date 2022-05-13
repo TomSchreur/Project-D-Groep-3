@@ -1,0 +1,149 @@
+{
+    "Clothing": {
+        "T-Shirts": {
+            "0": {
+                "Name": "Pierre Cardin - Heren Polo SS Basic Polo - Blauw",
+                "Price": 19.95,
+                "Discount": 0.1,
+                "ProductPage": "https://www.bol.com/nl/nl/p/pierre-cardin-heren-polo-ss-basic-polo-blauw-maat-l/9200000058031313/",
+                "ImageLink": "https://media.s-bol.com/q534ypoL4lG/550x715.jpg"
+            },
+            "1": {
+                "Name": "Fruit Of The Loom Heren Valueweight T-shirt met korte mouwen (Oranje) - EK-WK-Olympische Spelen",
+                "Price": 10.95,
+                "Discount": 0.0,
+                "ProductPage": "https://www.bol.com/nl/nl/p/fruit-of-the-loom-heren-valueweight-t-shirt-met-korte-mouwen-maat-l-ek-wk-olympische-spelen/9300000010007707/?bltgh=sez1gUXtnIpm8Lb1jNRNxg.4_33.44.ProductImage",
+                "ImageLink": "https://media.s-bol.com/oZEG9p7B6vqj/1103x1200.jpg"
+            },
+            "2": {
+                "Name": "Nike Sportswear Club Heren T-Shirt",
+                "Price": 19.99,
+                "Discount": 0.3,
+                "ProductPage": "https://www.bol.com/nl/nl/p/nike-sportswear-club-heren-t-shirt-maat-l/9200000108824141/?bltgh=sez1gUXtnIpm8Lb1jNRNxg.4_33.45.ProductImage",
+                "ImageLink": "https://media.s-bol.com/DYwDyrOOKKPy/824x1200.jpg"
+            },
+            "3": {
+                "Name": "JACK&JONES ORIGINALS JORCOPENHAGEN TEE SS CREW NECK NOOS Heren T-Shirt",
+                "Price": 15.24,
+                "Discount": 0.0,
+                "ProductPage": "https://www.bol.com/nl/nl/p/jack-jones-originals-jorcopenhagen-tee-ss-crew-neck-noos-heren-t-shirt-maat-l/9300000009398305/?bltgh=sez1gUXtnIpm8Lb1jNRNxg.4_33.53.ProductImage",
+                "ImageLink": "https://media.s-bol.com/jYzDPQ4oBoxz/972x1200.jpg"
+            },
+            "4": {
+                "Name": "5 Pack Fruit of the Loom Ronde Hals Valueweight T-shirt Wit",
+                "Price": 19.55,
+                "Discount": 0.2,
+                "ProductPage": "https://www.bol.com/nl/nl/p/5-pack-fruit-of-the-loom-ronde-hals-valueweight-t-shirt-wit-l/9200000090784483/?bltgh=sez1gUXtnIpm8Lb1jNRNxg.itEO25-jNB-UTjhNAYRMhA_0_30.51.ProductImage",
+                "ImageLink": "https://media.s-bol.com/mAG5G16RVr3/967x1200.jpg"
+            },
+            "5": {
+                "Name": "Klere-Zooi - Hey Marco, Prima! - Heren T-Shirt",
+                "Price": 18.99,
+                "Discount": 0.1,
+                "ProductPage": "https://www.bol.com/nl/nl/p/klere-zooi-hey-marco-prima-heren-t-shirt-l/9300000100948727/?bltgh=sez1gUXtnIpm8Lb1jNRNxg.jCmrfFOH6I-MURzNb9ZGmQ_0_30.41.ProductImage",
+                "ImageLink": "https://media.s-bol.com/DWkJQ6jKQgRB/83EGzYl/550x622.jpg"
+            },
+            "6": {
+                "Name": "Under Armour UA SPORTSTYLE LC SS Heren T-Shirt",
+                "Price": 23.95,
+                "Discount": 0.0,
+                "ProductPage": "https://www.bol.com/nl/nl/p/under-armour-ua-sportstyle-lc-ss-heren-t-shirt-maat-l/9200000125069251/?bltgh=sez1gUXtnIpm8Lb1jNRNxg.uNbmDkoyMXFDmZScOsVECQ_0_30.46.ProductImage",
+                "ImageLink": "https://media.s-bol.com/YQkqDYQz5W1O/k5LNzlv/1015x1200.jpg"
+            },
+            "7": {
+                "Name": "The North Face S/s Easy Tee - Eu Outdoorshirt Heren",
+                "Price": 34.90,
+                "Discount": 0.3,
+                "ProductPage": "https://www.bol.com/nl/nl/p/the-north-face-s-s-easy-tee-eu-outdoorshirt-heren-tnf-black/9200000073666230/?s2a=#productTitle",
+                "ImageLink": "https://media.s-bol.com/NJgwm5PJ4l6/945x1200.jpg"
+            }
+        },
+        "Jeans": {
+            "0": {
+                "Name": "JACK & JONES JJIGLENN JJORIGINAL AM 814 NOOS Heren Jeans",
+                "Price": 26.99,
+                "Discount": 0.1,
+                "ProductPage": "https://www.bol.com/nl/nl/p/jack-jones-jjiglenn-jjoriginal-am-814-noos-heren-jeans-maat-32-x-l32/9200000119822339/?bltgh=sPyuUiswVXYa4A01awNIkw.jdcJ7eBefO-FYFNmJaVKZg_0_43.44.ProductImage",
+                "ImageLink": "https://media.s-bol.com/JZmO141NrDoD/287x840.jpg"
+            },
+            "1": {
+                "Name": "WE Fashion Heren skinny fit comfort stretch jeans",
+                "Price": 40.0,
+                "Discount": 0.2,
+                "ProductPage": "https://www.bol.com/nl/nl/p/we-fashion-heren-skinny-fit-comfort-stretch-jeans-maat-w34-x-l32/9200000132903952/?bltgh=sPyuUiswVXYa4A01awNIkw.jdcJ7eBefO-FYFNmJaVKZg_0_43.45.ProductImage",
+                "ImageLink": "https://media.s-bol.com/XoK00RXX3L1g/428x1200.jpg"
+            },
+            "2": {
+                "Name": "JACK & JONES JJIGLENN JJORIGINAL AM 817 NOOS Heren Jeans",
+                "Price": 34.0,
+                "Discount": 0.0,
+                "ProductPage": "https://www.bol.com/nl/nl/p/jack-jones-jjiglenn-jjoriginal-am-817-noos-heren-jeans-maat-32-x-l32/9200000128361706/?bltgh=sPyuUiswVXYa4A01awNIkw.jdcJ7eBefO-FYFNmJaVKZg_0_43.46.ProductImage",
+                "ImageLink": "https://media.s-bol.com/mwoKW4L0KkrR/288x840.jpg"
+            },
+            "3": {
+                "Name": "ONLY & SONS ONSPLY LIFE JOG BLUE SHORTS PK 8584 NOOS Heren Broek",
+                "Price": 26.99,
+                "Discount": 0.3,
+                "ProductPage": "https://www.bol.com/nl/nl/p/only-sons-onsply-life-jog-blue-shorts-pk-8584-noos-heren-broek-maat-l/9300000016488820/?bltgh=sPyuUiswVXYa4A01awNIkw.jdcJ7eBefO-FYFNmJaVKZg_0_43.47.ProductImage",
+                "ImageLink": "https://media.s-bol.com/Bngm2W1XwmO2/1023x1200.jpg"
+            },
+            "4": {
+                "Name": "JACK & JONES JJIRICK JJIORIGINAL SHORTS AM 261 50SPS Heren Broek",
+                "Price": 24.99,
+                "Discount": 0.1,
+                "ProductPage": "https://www.bol.com/nl/nl/p/jack-jones-jjirick-jjioriginal-shorts-am-261-50sps-heren-broek-maat-l/9300000074853481/?bltgh=grlAVhSXqzj6pXlmF2dM6Q.4_47.53.ProductImage",
+                "ImageLink": "https://media.s-bol.com/g8KxvoxJqGJG/mODyZ4R/550x677.jpg"
+            }
+
+        },
+        "Socks": {
+            "0": {
+                "Name": "SuperDad - Grappige sokken - One Size - Cadeau Mannen - Huissokken - Vaderdag - Verjaardag - Superman - Geschenk Vader - Papa",
+                "Price": 8.95,
+                "Discount": 0.05,
+                "ProductPage": "https://www.bol.com/nl/nl/p/superdad-grappige-sokken-one-size-cadeau-mannen-huissokken-vaderdag-verjaardag-superman-geschenk-vader-papa/9300000041404084/?s2a=#productTitle",
+                "ImageLink": "https://media.s-bol.com/Jz0Z5l5wN04J/46zywN1/916x1200.jpg"
+            },
+            "1": {
+                "Name": "Happy Socks Fruit Giftbox",
+                "Price": 24.95,
+                "Discount": 0.1,
+                "ProductPage": "https://www.bol.com/nl/nl/p/happy-socks-fruit-giftbox-maat-41-46/9200000088986461/?bltgh=iKBZOY12NEBR8mRrbWxIhg.4_34.53.ProductImage",
+                "ImageLink": "https://media.s-bol.com/qxRVnKLV4mGR/ANGzmp9/1200x1147.jpg"
+            },
+            "2": {
+                "Name": "Puma Sneaker Unisex Sokken - 6-pack",
+                "Price": 17.99,
+                "Discount": 0.2,
+                "ProductPage": "https://www.bol.com/nl/nl/p/puma-sneaker-unisex-sokken-6-pack-maat-39-42/9300000021057774/?bltgh=iKBZOY12NEBR8mRrbWxIhg.4_34.54.ProductImage",
+                "ImageLink": "https://media.s-bol.com/JQ5NV3qvl0Lv/550x255.jpg"
+            },
+            "3": {
+                "Name": "Tommy Hilfiger Sokken Heren 6P",
+                "Price": 27.29,
+                "Discount": 0.15,
+                "ProductPage": "https://www.bol.com/nl/nl/p/tommy-hilfiger-sokken-heren-6p-maat-43-46/9300000021057862/?bltgh=iKBZOY12NEBR8mRrbWxIhg.j-8XAq3UdM0RzbUYQdlNqg_0_30.47.ProductImage",
+                "ImageLink": "https://media.s-bol.com/x1X1nGXV9V79/550x390.jpg"
+            },
+            "4": {
+                "Name": "Happy Socks - Navy Gift Box in rood-wit-blauw - Unisex",
+                "Price": 21.95,
+                "Discount": 0.0,
+                "ProductPage": "https://www.bol.com/nl/nl/p/happy-socks-navy-gift-box-in-rood-wit-blauw-unisex-maat-41-46/9200000116761387/?bltgh=iKBZOY12NEBR8mRrbWxIhg.j-8XAq3UdM0RzbUYQdlNqg_0_30.53.ProductImage",
+                "ImageLink": "https://media.s-bol.com/4WYxPj0995E0/jZmjA9l/1200x1177.jpg"
+            }
+
+        }
+    },
+    "Appliances": {
+        "Vacuum Cleaners": {
+            "0": {
+                "Name": "Philips – PowerPro Compact PowerPro Compact FC9330/09 - Stofzuiger zonder zak",
+                "Price": 99.0,
+                "Discount": 0.3,
+                "ProductPage": "https://www.bol.com/nl/nl/p/philips-powerpro-compact-fc9330-09-stofzuiger-zonder-zak/9200000072442735/?bltgh=ifD3Py6l4a63ERPmCpBMWg.4_50.51.ProductImage",
+                "ImageLink": "https://media.s-bol.com/g59420RZRn6D/550x526.jpg"
+            }
+        }
+    }
+}
