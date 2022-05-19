@@ -3,7 +3,7 @@ import os
 import threading
 from PIL import Image
 import shutil
-from feature_extractor import FeatureExtractor, DbFeatures
+from feature_extractor import FeatureExtractor, parseJson
 from datetime import datetime
 from flask import Flask, request, render_template, url_for, session
 from pathlib import Path
@@ -68,7 +68,14 @@ def index():
         print("Total time mp3 gen: ", end_time - start_time)
 
         # establish scores to pass to HTML
-        scores = [(dists[id], Products[id].image_path, Products[id].name, getPrice(Products[id].price, Products[id].discount), Products[id].tts_path) for id in ids]
+        scores = [(
+            dists[id], 
+            Products[id].image_path, 
+            Products[id].name, 
+            getPrice(Products[id].price, Products[id].discount), 
+            f"./static/mp3files/{Products[id].name}.mp3", 
+            Products[id].product_page) 
+            for id in ids]
 
         return render_template('index.html',
                                query_path=uploaded_img_path,

@@ -4,6 +4,7 @@ import json
 from DbClasses import Product, Category, getPrice
 import random
 from sqlite3 import Error
+import feature_extractor
 #weet niet zeker of sqlite via pip moet gebeuren (bij mij niet). zoja, toevoegen bij requirements.txt
 listImgNames=[]
 
@@ -25,9 +26,9 @@ def createProducttable():
             price real NOT NULL,
             category_id integer NOT NULL,
             description text NOT NULL,
-            discount real,
+            discount real NOT NULL,
             product_page text NOT NULL,
-            image_link text NOT NULL,
+            image_path text NOT NULL,
             FOREIGN KEY(category_id) REFERENCES Categories(id)
             ); """)
 
@@ -35,22 +36,22 @@ def createCategorytable():
     with create_connection("database.db") as db:
         cur = db.cursor()
         cur.execute(""" CREATE TABLE IF NOT EXISTS Categories (
-            id integer PRIMARY KEY AUTOINCREMENT, 
-            product_type text NOT NULL,
-            category text NOT NULL UNIQUE
+            id integer PRIMARY KEY AUTOINCREMENT,
+            category text NOT NULL,
+            sub_category text NOT NULL UNIQUE
             ); """)
 
-def insertintoProductstable(name, price, category_id, description, discount):
+def insertintoProductstable(name, price, category_id, description, discount, product_page, image_path):
     with create_connection("database.db") as db:
         cur = db.cursor()
-        cur.execute(""" INSERT INTO Products (name, price, category_id, description, discount, product_page, image_link) 
-            VALUES(?,?,?,?,?,?,?);""",(name, price, category_id, description, discount, product_page, image_link)) #id is autoincrement, so doesn't need to be defined
+        cur.execute(""" INSERT INTO Products (name, price, category_id, description, discount, product_page, image_path) 
+            VALUES(?,?,?,?,?,?,?);""",(name, price, category_id, description, discount, product_page, image_path)) #id is autoincrement, so doesn't need to be defined
 
-def insertintoCategorytable(product_type, category):
+def insertintoCategorytable(category, sub_category):
     with create_connection("database.db") as db:
         cur = db.cursor()
-        cur.execute(""" INSERT INTO Categories (product_type, category) 
-            VALUES(?,?);""",(product_type, category))
+        cur.execute(""" INSERT INTO Categories (category, sub_category) 
+            VALUES(?,?);""",(category, sub_category))
 
 def selectallFromTable(table_name):
     with create_connection("database.db") as db:
@@ -87,8 +88,7 @@ def getProductsJSON():
     jsonObj = json.loads(a.read())
     for i in jsonObj:
         for j in jsonObj[i]:
-            for k, productInfo in jsonObj[i][j].items():
-                productList.append(productInfo)
+            productList.append(jsonObj[i][j])
     a.close()
     return productList
 
@@ -98,7 +98,7 @@ def getCategoriesJSON():
     jsonObj = json.loads(a.read())
     for i in jsonObj:
         for j in jsonObj[i]:
-            categoryList.append({'ProductType': i, 'Category': j})
+            categoryList.append({'Category': i, 'SubCategory': j})
     a.close()
     return categoryList
 
@@ -106,23 +106,20 @@ def getCategoriesJSON():
 # En dan bij de cursors.execute even de juiste categorie in parameters plaatsen.
 def insertProductTable():
     productArr = getProductsJSON()
+    categoryArr = getCategoriesJSON()
+
     conn = sqlite3.connect("database.db")
     cursor = conn.cursor()
-    for p in productArr:
-        name = p["Name"]
-        price = p["Price"]
-        categories = selectallFromTable("Categories")
-        discount = p["Discount"]
-        product_page = p["ProductPage"]
-        image_link = p["ImageLink"]
-        description = ""
-        category_id = 0
-        for category in categories:
-            if category.category.upper() in name.upper():
-                category_id = category.id
-                description = "The product name is: " + name + ". The price is € " + getPrice(price,discount) + ". The product type is: " + category.product_type + " of category " + category.category
-                break
-        cursor.execute("""INSERT OR IGNORE INTO Products (name, price, category_id, description, discount, product_page, image_link) VALUES(?,?,?,?,?,?,?)""", (name, price, category_id, description, discount, product_page, image_link))
+    for pt in range(len(categoryArr)):
+        for p in productArr[pt]:
+            name = p["Name"]
+            price = p["Price"]
+            discount = p["Discount"]
+            discountPrice = getPrice(price, discount)
+            product_page = p["ProductPage"]
+            image_path = p["ImagePath"]
+            description = "The product name is: " + name + ". The price is € " + discountPrice + ". The category is: " + categoryArr[pt]["Category"] + " of sub category " + categoryArr[pt]["SubCategory"]
+            cursor.execute("""INSERT OR IGNORE INTO Products (name, price, category_id, description, discount, product_page, image_path) VALUES(?,?,?,?,?,?,?)""", (name, price, pt, description, discount, product_page, image_path))
     conn.commit()
     cursor.close()
     conn.close()
@@ -132,7 +129,7 @@ def insertCategoryTable():
     conn = sqlite3.connect("database.db")
     cursor = conn.cursor()
     for c in categories:
-        cursor.execute("""INSERT OR IGNORE INTO Categories (product_type, category) VALUES(?,?)""", (c["ProductType"], c["Category"]))
+        cursor.execute("""INSERT OR IGNORE INTO Categories (category, sub_category) VALUES(?,?)""", (c["Category"], c["SubCategory"]))
     conn.commit()
     cursor.close()
     conn.close()
@@ -145,6 +142,7 @@ if __name__ == '__main__':
         c.execute("""DROP TABLE Categories""")
     createProducttable()
     createCategorytable()
+    feature_extractor.parseJson(getProductsJSON(), getCategoriesJSON())
     insertCategoryTable()
     insertProductTable()
 

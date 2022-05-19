@@ -20,6 +20,7 @@ class Mp3Gen:
         mp3 = None
         while self.mp3Count < len(self.ids):
             with self.lock:
+                self.products[self.ids[self.mp3Count]].name
                 if((self.products[self.ids[self.mp3Count]].name)+".mp3" not in "./static/mp3files"):
                     mp3 = self.products[self.ids[self.mp3Count]]
                     self.mp3Count = self.mp3Count + 1

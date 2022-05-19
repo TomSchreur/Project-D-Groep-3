@@ -7,6 +7,13 @@
     <script src="C:\Users\ibrah\OneDrive\Documenten\GitHub\Project-D-Groep-3\server.py"></script>
 
     <style>
+        figure {
+            display: table;
+        }
+        figcaption {
+            display: table-caption; caption-side: bottom;
+        }
+
         .showmorebutton {
             position: relative;
             left: 50%;
@@ -109,16 +116,18 @@
 
             {% for score in scores %}
             <figure style="float: left; margin-right: 20px; margin-bottom: 20px;">
-                <img id ="{{score[4]}}" onmouseover= play(this.id) onmouseout="pause()" src="{{ score[1] }}"  height="200px">
+                <a href="{{ score[5] }}" target="_blank">
+                    <img id ="{{ score[4] }}" onmouseover= play(this.id) onmouseout="pause()" src="{{ score[1] }}" height="200px">
+                </a>
                 <figcaption>{{ score[2] }}</figcaption>
                 <figcaption>Price: €{{score[3]}}</figcaption>
                 <audio>
-                    <source src="{{score[4]}}" />
+                    <source src="{{ score[5] }}" />
                 </audio>
             </figure>
             
             {% endfor %}
-
+            
             
             <script type="text/javascript">
                 var tts = false;
@@ -133,7 +142,7 @@
                 function play(id){
                     if (tts) {
                         product = new Audio(id);
-                            product.play();
+                        product.play();
                     }
                 }
                 function pause(){
