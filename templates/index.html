@@ -2,108 +2,66 @@
 <html>
 
 <head>
-
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <script src="C:\Users\ibrah\OneDrive\Documenten\GitHub\Project-D-Groep-3\server.py"></script>
-
-    <style>
-        figure {
-            display: table;
-        }
-        figcaption {
-            display: table-caption; caption-side: bottom;
-        }
-
-        .showmorebutton {
-            position: relative;
-            left: 50%;
-        }
-
-        .button {
-            background-color: #020082; /* bol.com blue*/
-            border: none;
-            color: white;
-            padding: 15px 32px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            border-radius: 2px;
-        }
-
-        .button:focus {
-            color: #020069;
-            box-shadow: inset 1px 1px 4px #222;
-            transform: translateY(1px);
-        }
-
-        .button-up {
-            margin-top: 5px;
-            background-color: #020082; /* bol.com blue*/
-            border: none;
-            color: white;
-            padding: 15px 32px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            border-radius: 2px;
-        }
-
-        .button-up:focus {
-            color: #020069;
-            box-shadow: inset 1px 1px 4px #222;
-            transform: translateY(1px);
-        }
-
-
-        .button-up2 {
-            margin-top: 5px;
-            margin-left: 5px;
-            background-color: #020082; /* bol.com blue*/
-            border: none;
-            color: white;
-            padding: 15px 32px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            border-radius: 2px;
-        }
-
-        .button-up2:focus {
-            color: #020069;
-            box-shadow: inset 1px 1px 4px #222;
-            transform: translateY(1px);
-        }
-        
-
-    </style>
+    
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='homepage.css') }}">
 </head>
-
-<header>
-    <button class="button-up2" onclick="window.location.href='/high-contrast/'">Switch to high contrast</button>
-    <button class="button-up" onclick="setTTS()">Toggle Text-to-Speech</button>
-</header>
+<script type="text/javascript">
+    var tts = false;
+    var selectShirt = false;
+    var countProduct = 0;  
+    var product= Audio;  
+</script>
 
 <body>
 
     <div class="container">
-        <h1>Visual Search</h1>
-        <form method="POST" enctype="multipart/form-data">
+        
+        <div class="header">
+            <ul>
+                <!-- Temp, replace boaz navbar -->
+                <li><a href="default.asp">Home</a></li>
+                <li><a href="news.asp">News</a></li>
+                <li><a href="contact.asp">Contact</a></li>
+                <li><a href="about.asp">About</a></li>
+              </ul>
+        </div>
 
-            <input type="file" class="button" name="query_img" >
-            <br>
+        <div class="menu">
+            <button class="button-contrast" onclick="window.location.href='/high-contrast/'">Switch to high contrast</button>
+            <button class="button-tts" onclick="setTTS()">Toggle Text-to-Speech</button>
+            <p> </p>
+            <div class="dropdown-clothing">
+                <button class="clothing">Clothing</button>
+                <div class="content-clothing">
+                    <button class="select-shirt" onclick="">Select shirts</button>
+                    <button class="select-sweater">Select sweaters</button>
+                    <button class="select-jeans">Select jeans</button>
+                    <button class="select-pants">Select pants</button>
+                </div>
+            </div>
 
-            {%if noPictureSelected %}
-            <p style="color:red">{{noPictureSelected}}</p>
-            {% endif%}
 
-            <input type="submit" class="button">
-            
-        </form>  
+        </div>
+        
+        <div class="main">
+            <h1>Upload a image!</h1>
+
+            <form method="POST" enctype="multipart/form-data">
+
+                <input type="file" class="button" name="query_img" >
+                <br>
+    
+                {%if noPictureSelected %}
+                <p style="color:red">{{noPictureSelected}}</p>
+                {% endif%}
+    
+                <input type="submit" class="button">
+                
+            </form>
+
             {% if scores %}
-            <h2>Query:</h2>
+            <h2>Uploaded:</h2>
             {% endif %}
 
             {% if query_path %}
@@ -111,49 +69,64 @@
             {% endif %}
 
             {% if scores %}
-            <h2>Results:</h2>
+            <h2>Your image returned these products:</h2>
             {% endif %}
 
-            {% for score in scores %}
-            <figure style="float: left; margin-right: 20px; margin-bottom: 20px;">
-                <a href="{{ score[5] }}" target="_blank">
-                    <img id ="{{ score[4] }}" onmouseover= play(this.id) onmouseout="pause()" src="{{ score[1] }}" height="200px">
-                </a>
-                <figcaption>{{ score[2] }}</figcaption>
-                <figcaption>Price: €{{score[3]}}</figcaption>
-                <audio>
-                    <source src="{{ score[5] }}" />
-                </audio>
-            </figure>
-            
-            {% endfor %}
-            
-            
-            <script type="text/javascript">
-                var tts = false;
-                function setTTS(){
-                    tts = !tts;
-                    console.log(tts)
-                }
-                console.log(tts)
-        
-                
-                var product= Audio;
-                function play(id){
-                    if (tts) {
-                        product = new Audio(id);
-                        product.play();
-                    }
-                }
-                function pause(){
-                    if (tts) {
-                        product.pause();
-                    }
-                }
-                
-            </script>
+            <div class="product-container">
 
+                <div class="product-list">                
+                    {% for score in scores %}
+
+                    <script type="text/javascript"> 
+                        countProduct++;
+                        console.log(countProduct);
+                    </script>
+                    
+                        <div class="product-card">
+                            <div class="text">
+                                <p class="name">{{ score[2] }}</p>
+                            </div>
+                            <a href="{{ score[5] }}" target="_blank"> 
+                                <img class ="img" id ="{{score[4]}}" onmouseover= play(this.id) onmouseout="pause()" src="{{ score[1] }}"  height="200px"> 
+                            </a>
+                            <div class="text">
+                                <p class="price">Price: €{{score[3]}} </p>
+                            </div>
+                        </div>
+                        
+                        <audio>
+                            <source src="{{score[5]}}" />
+                        </audio>
+                    
+                    {% endfor %}
+                </div>
+
+            </div>
+            
         </div>
+ 
+        
+        <script type="text/javascript">
+            function setTTS(){
+                tts = !tts;
+            }
+            function play(id){
+                if (tts) {
+                    product = new Audio(id);
+                    product.play();
+                }
+            }
+            function pause(){
+                if (tts) {
+                    product.pause();
+                }
+            }
+            function showShirts(){
+                selectShirt = !selectShirt;
+                console.log(selectShirt);
+            }
+        </script>
+    </div>
 
     </body>
     <!--<footer>
@@ -167,6 +140,7 @@
 
 
     </div>
+
 </body>
 
 </html>
