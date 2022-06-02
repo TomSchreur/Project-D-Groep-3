@@ -5,6 +5,9 @@ import numpy as np
 from database_manual import selectProducts, selectallFromTable
 import threading
 from PIL import Image
+import urllib.request
+import os
+import json
 
 # See https://keras.io/api/applications/ for details
 
@@ -39,11 +42,26 @@ class DbFeatures:
         self.productCount = 0
     
     def getFeature(self, threadId):
-        while self.productCount < len(self.products):
-            with self.lock:
+        with self.lock:
+            while self.productCount < len(self.products):
+                # get image from web
                 product = self.products[self.productCount]
+                urllib.request.urlretrieve(product.image_path, f"static/imageStorageTemp/product-result-{self.productCount}.png")
+
+                feature = self.fe.extract(img = Image.open(os.path.abspath(f"static/imageStorageTemp/product-result-{self.productCount}.png")))
                 self.productCount = self.productCount + 1
-            feature = self.fe.extract(img = Image.open(product.image_path))
-            with self.lock:
                 self.features.append(feature)
                 print("loading: ", product.id, " using thread no. ", threadId)
+            
+def parseJson(products, categories):
+    # removes unwanted characters from json file values (like '/' in names)
+    jsonObj = None
+    with open('static/DbData.json', "r") as jsonFile:
+        jsonObj = json.load(jsonFile)
+
+        for pt in range(len(categories)):
+            for p in range(len(jsonObj[categories[pt]["Category"]][categories[pt]["SubCategory"]])):
+                parsedName = jsonObj[categories[pt]["Category"]][categories[pt]["SubCategory"]][p]["Name"].replace('/', ' ')
+                jsonObj[categories[pt]["Category"]][categories[pt]["SubCategory"]][p]["Name"] = parsedName
+    with open('static/DbData.json', "w") as jsonFile:
+        json.dump(jsonObj, jsonFile, indent=4)

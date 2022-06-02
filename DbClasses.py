@@ -1,24 +1,27 @@
+import random
 class Product:
-    def __init__(self, id, name, image_path, price, category_id, tts_path, description, discount): #creates a Product object with given values
+    def __init__(self, id, name, price, category_id, description, discount, product_page, image_path): #creates a Product object with given values
         self.id = id
         self.name = name
-        self.image_path = image_path
         self.price = price
         self.category_id = category_id
-        self.tts_path = tts_path
         self.description = description
         self.discount = discount
+        self.image_path = image_path
+        self.product_page = product_page
+    
+    def getInfo(self):
+        return f"[{self.id}] {self.name} ({self.image_path} - {self.product_page})"
 
 class Category:
-    def __init__(self, id, product_type, category):
+    def __init__(self, id, category, sub_category):
         self.id = id
-        self.product_type = product_type
         self.category = category
+        self.sub_category = sub_category
 
 def getPrice(price, discount = 0):
-    newPrice = price * (1 - discount)
+    newPrice = price * (1 - float(discount))
     pstrRounded = str(round(newPrice, 2))
-    pstr = str(newPrice)
     cents = False
     decimalCount = 0
     result = ""

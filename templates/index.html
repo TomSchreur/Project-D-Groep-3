@@ -6,15 +6,16 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <link rel="stylesheet" href="\static\style.css">
         <script src="C:\Users\ibrah\OneDrive\Documenten\GitHub\Project-D-Groep-3\server.py"></script>
-
+        
         <script>
-                    
+                
             function uploadFiles() {
                 var files = document.getElementById('file_upload').files;
                 if(files.length==0){
                     alert("Please first choose or drop any file(s)...");
                     return;
                 }
+
                 var filenames="";
                 for(var i=0;i<files.length;i++){
                     filenames+=files[i].name+"\n";
@@ -66,63 +67,79 @@
         </nav>
 
         
-        
-
-         
         <div class="container">
 
             <div class="toptxt">
-                <h1>Simple image search engine</h1>
+                <h1>Bol.com Visual Search</h1>
             </div>
             
-            <!--
-            <form method="POST" enctype="multipart/form-data">
-
-                <input type="file" class="button" name="query_img" >
-                <br>
-
-                {%if noPictureSelected %}
-                <p style="color:red">{{noPictureSelected}}</p>
-                {% endif%}
-
-                <input type="submit" class="button">
+                <!--
+                <head>
+                    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+                    
+                    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='homepage.css') }}">
+                </head>
+                <script type="text/javascript">
+                    var tts = false;
+                    var selectShirt = false;
+                    var countProduct = 0;  
+                    var product= Audio;  
+                </script>
                 
-            </form>  
-            -->
-
+                <body> -->
+        
+        <div class="main">
             <div class="upload-container">
-                <input type="file"  id="file_upload" multiple /> 
+                <form method="POST" enctype="multipart/form-data">
+                    <input type="file" id="file_upload" name="query_img" class="vak"/>
+                    <div class="submitbutton">
+                        <input type="submit" class="button"/>
+                    </div>
+                </form>
             </div>
-
-            <div class="submitbutton">
-                <input type="submit" class="button">
-            </div>
-            
 
             {% if scores %}
-            <h2>Query:</h2>
+            <h2>Uploaded:</h2>
             {% endif %}
 
             {% if query_path %}
-            <img src="{{ query_path }}" width="300px">
+            <img src="{{ query_path }}" height="200px">
             {% endif %}
 
             {% if scores %}
-            <h2>Results:</h2>
+            <h2>Your image returned these products:</h2>
             {% endif %}
 
-            {% for score in scores %}
-            <figure style="float: left; margin-right: 20px; margin-bottom: 20px;">
-                <img id ="{{score[4]}}" onmouseover= play(this.id) onmouseout="pause()" src="{{ score[1] }}"  height="200px"> 
-                <figcaption>Comparison {{ score[0] }}</figcaption>
-                <figcaption>{{ score[2] }}</figcaption>
-                <figcaption>Price: €{{score[3]}}</figcaption>
-                <audio>
-                    <source src="{{score[4]}}" />
-                </audio>
-            </figure>
-            {% endfor %}
+            <div class="product-container">
 
+                <div class="product-list">                
+                    {% for score in scores %}
+
+                    <script type="text/javascript"> 
+                        countProduct++;
+                        console.log(countProduct);
+                    </script>
+                    
+                    <div class="product-card">
+                        <div class="text">
+                            <p class="name">{{ score[2] }}</p>
+                        </div>
+                        <a href="{{ score[5] }}" target="_blank"> 
+                            <img class ="img" id ="{{score[4]}}" onmouseover= play(this.id) onmouseout="pause()" src="{{ score[1] }}"  height="200px"> 
+                        </a>
+                        <div class="text">
+                            <p class="price">Price: €{{score[3]}} </p>
+                        </div>
+                    </div>
+                    
+                    <audio>
+                        <source src="{{score[5]}}" />
+                    </audio>
+                    
+                    {% endfor %}
+                </div>
+
+            </div>
             
             
             <script type="text/javascript">
@@ -150,5 +167,4 @@
 
         </div>    
     </body>
-
 </html>

@@ -1,15 +1,31 @@
+from math import prod
+from unicodedata import category
 from PIL import Image
-from feature_extractor import DbFeatures
-from database_manual import selectallFromTable
+from feature_extractor import DbFeatures, parseJson
+from database_manual import selectallFromTable, getCategoriesJSON, getProductsJSON
 from time import perf_counter
 from pathlib import Path
 import numpy as np
 import threading
+import shutil
+import os
+import json
 
 if __name__ == '__main__':
-    products = selectallFromTable("Products")
     featureClass = DbFeatures()
     featureThreads = list()
+    try:
+        shutil.rmtree('static/imageStorageTemp')
+    except:
+        print("directory was already removed, continuing w execution")
+    try:
+        os.mkdir('static/imageStorageTemp')
+    except:
+        print("directory was already created, continuing w execution")
+    
+    products = getProductsJSON()
+    categories = getCategoriesJSON()
+    parseJson(products, categories)
 
     start_time = perf_counter()
     for i in range(5):
@@ -19,8 +35,11 @@ if __name__ == '__main__':
     for y in featureThreads:
         y.join()
     end_time = perf_counter()
-    print("Total time: ", end_time - start_time)
+    print("Total time:", end_time - start_time, "Seconds.")
     featureClass.features = np.array(featureClass.features)
 
     with open('static/featureStorage.npy', 'wb+') as fs:
         np.save(fs, featureClass.features)
+    
+    shutil.rmtree('static/imageStorageTemp')
+
