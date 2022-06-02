@@ -1,0 +1,147 @@
+<!doctype html>
+<html>
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="C:\Users\ibrah\OneDrive\Documenten\GitHub\Project-D-Groep-3\server.py"></script>
+
+    <style>
+        .showmorebutton {
+            position: relative;
+            left: 50%;
+        }
+
+        .button {
+            font-size: 1.35em;
+            background-color: #020082; /* bol.com blue*/
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            /*font-size: 16px;*/
+            border-radius: 2px;
+        }
+
+        .button:focus {
+            color: #020069;
+            box-shadow: inset 1px 1px 4px #222;
+            transform: translateY(1px);
+        }
+
+        .button-up {
+            font-size: 1.35em;
+            margin-top: 5px;
+            background-color: #020082; /* bol.com blue*/
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            /*font-size: 16px;*/
+            border-radius: 2px;
+        }
+
+        .button-up:focus {
+            color: #020069;
+            box-shadow: inset 1px 1px 4px #222;
+            transform: translateY(1px);
+        }
+
+
+        .button-up2 {
+            font-size: 1.35em;
+            margin-top: 5px;
+            margin-left: 5px;
+            background-color: #020082; /* bol.com blue*/
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            /*font-size: 16px;*/
+            border-radius: 2px;
+        }
+
+        .button-up2:focus {
+            color: #020069;
+            box-shadow: inset 1px 1px 4px #222;
+            transform: translateY(1px);
+        }
+        
+
+    </style>
+</head>
+
+<header>
+    <button class="button-up2" onclick="window.location.href='/'">Switch to normal contrast</button>
+    <button class="button-up" onclick="setTTS()">Toggle Text-to-Speech</button>
+</header>
+
+    <body style="background-color:black; font-size:1.35em">
+        <div class="container">
+
+            <h1 style="font-size: 2.85em; color: yellow">Visual Search</h1>
+            
+            <form method="POST" style="color:#00ff1a" enctype="multipart/form-data">
+                <input type="file" class="button" name="query_img"><br>
+
+                {%if noPictureSelected %}
+                <p style="font-size: 2em; color:#00ff1a">{{noPictureSelected}}</p>
+                {% endif%}
+
+                <input style="font-size: 1.35em; background-color: #020082" type="submit" class="button">
+            </form>
+            {% if scores %}
+            <h2 style="font-size: 2.85em; color: yellow">Query:</h2>
+            {% endif %}
+
+            {% if query_path %}
+            <img src="{{ query_path }}" height="300px">
+            {% endif %}
+
+            {% if scores %}
+            <h2 style="font-size: 2.85em; color: yellow">Results:</h2>
+            {% endif %}
+
+            {% for score in scores %}
+            <figure style="font-size: 1.35em; color:#00ff1a; float: left; margin-right: 20px; margin-bottom: 20px;">
+                <img id ="{{score[4]}}" onmouseover= play(this.id) onmouseout="pause()" src="{{ score[1] }}"  height="300px"> 
+                <figcaption>{{ score[2] }}</figcaption>
+                <figcaption>Price: €{{score[3]}}</figcaption>  
+                <audio>
+                    <source src= "{{score[4]}}"/>
+                </audio>
+            </figure>
+            
+            {% endfor %}
+            
+            <script type="text/javascript">
+                var tts = false;
+                function setTTS(){
+                    tts = !tts;
+                    console.log(tts)
+                }
+                console.log(tts)
+        
+                
+                var product= Audio;
+                function play(id){
+                    if (tts) {
+                        product = new Audio(id);
+                            product.play();
+                    }
+                }
+                function pause(){
+                    if (tts) {
+                        product.pause();
+                    }
+                }
+                
+            </script>
+        </div>
+    </body>
+</html>
+

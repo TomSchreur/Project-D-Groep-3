@@ -15,5 +15,17 @@
 }
 
 .nopicture-text{
-    color:#00ff1a ;
+    color:#00ff1a;
+}
+
+.tts-button{
+    background-color: black;
+    color:aqua;
+    border-color: aqua;
+}
+
+.hcswitch-button{
+    background-color: black;
+    color:aqua;
+    border-color: aqua;
 }
