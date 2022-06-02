@@ -28,7 +28,6 @@ Products = selectallFromTable("Products")
 
 @app.route('/', methods=['GET', 'POST',])
 def index():
-    ttspressed=False
     if request.method == 'POST':
         # removes directory 'static/uploaded' & file contained inside
         # uploaded contains the last-uploaded image by user
