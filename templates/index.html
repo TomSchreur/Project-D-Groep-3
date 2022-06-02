@@ -12,37 +12,6 @@
     var selectShirt = false;
     var countProduct = 0;  
     var product= Audio; 
-    var contrastSwitch = false;
-    
-    function contrastSwitchfunction(){ 
-        var body = document.getElementById("body");
-        var text1 = document.getElementById("uploadImage");
-        var text2 = document.getElementById("imageReturn");
-        var text3 = document.getElementById("uploaded");
-        var text4 = document.getElementById("noPicture");
-
-        console.log(contrastSwitch);
-
-        if (contrastSwitch){
-            body.classList.remove("body-highcontrast");
-            text1.classList.remove("uploadimage-text");
-            text2.classList.remove("imagereturn-text");
-            text3.classList.remove("uploaded-text");
-            text4.classList.remove("nopicture-text")
-            contrastSwitch = false;
-        }
-        else {
-            body.classList.add("body-highcontrast");
-            text1.classList.add("uploadimage-text");
-            text2.classList.add("imagereturn-text");
-            text3.classList.add("uploaded-text");
-            text4.classList.add("nopicture-text")
-            contrastSwitch = true;
-        }
-        
-    
-    }
-
 </script>
 
 <body id="body">
