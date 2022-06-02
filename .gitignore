@@ -91,3 +91,9 @@ ENV/
 
 # Rope project settings
 .ropeproject
+
+# annoying static zooi
+.jpg
+.jpeg
+.png
+.mp3
