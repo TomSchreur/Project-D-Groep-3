@@ -83,57 +83,6 @@ def index():
 
     else:
         return render_template('index.html')
-        
-
-@app.route('/high-contrast/', methods=['GET', 'POST'])
-def highContrastSwitch():
-    if request.method == 'POST':
-        shutil.rmtree('static/uploaded')
-        os.mkdir('static/uploaded')
-        shutil.rmtree('static/mp3files')
-        os.mkdir('static/mp3files')
-        file = request.files['query_img']
-
-        noPictureSelected = 'Geen bestand geselecteerd.'
-
-        if file.filename == '':
-            return render_template('highContrastIndex.html', noPictureSelected=noPictureSelected)
-
-        # Save query image
-        img = Image.open(file.stream)  # PIL image
-        uploaded_img_path = "static/uploaded/" + datetime.now().isoformat().replace(":", ".") + "_" + file.filename
-        img.save(uploaded_img_path)
-        uploaded_img_path = "../" + uploaded_img_path
-
-        # Run search
-        query = fe.extract(img)
-        dists = np.linalg.norm(features-query, axis=1)  # L2 distances to features
-        ids = np.argsort(dists)[:30]  # Top 30 results
-        # scores = [(dists[id], features.products[id].image_path) for id in ids]
-        # session["scores"] = scores
-
-        mp3ThreadClass = Mp3Gen(ids)
-        mp3Threads = list()
-
-        start_time = perf_counter()
-
-        for i in range(4):
-            x = threading.Thread(target=mp3ThreadClass.generateMp3Threading, args=(i,))
-            mp3Threads.append(x)
-            x.start()
-        for y in mp3Threads:
-            y.join()
-
-        end_time = perf_counter()
-        print("Total time mp3 gen: ", end_time - start_time)
-
-        # establish scores to pass to HTML
-        scores = [(dists[id], "." + Products[id].image_path, Products[id].name, getPrice(Products[id].price, Products[id].discount), "." + Products[id].tts_path) for id in ids]
-        return render_template('highContrastIndex.html',
-                               query_path=uploaded_img_path,
-                               scores=scores)
-    else:
-        return render_template('highContrastIndex.html')  
 
 if __name__=="__main__":
     app.run("0.0.0.0")

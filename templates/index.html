@@ -3,6 +3,7 @@
 
 <head>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./index.css">
     
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='homepage.css') }}">
 </head>
@@ -10,10 +11,42 @@
     var tts = false;
     var selectShirt = false;
     var countProduct = 0;  
-    var product= Audio;  
+    var product= Audio; 
+    var contrastSwitch = false;
+    
+    function contrastSwitchfunction(){
+        console.log('function activated');  
+        var body = document.getElementById("body");
+        var text1 = document.getElementById("uploadImage");
+        var text2 = document.getElementById("imageReturn");
+        var text3 = document.getElementById("uploaded");
+        var text4 = document.getElementById("noPicture");
+
+        console.log(contrastSwitch);
+
+        if (contrastSwitch){
+            body.classList.remove("body-highcontrast");
+            text1.classList.remove("uploadimage-text");
+            text2.classList.remove("imagereturn-text");
+            text3.classList.remove("uploaded-text");
+            text4.classList.remove("nopicture-text")
+            contrastSwitch = false;
+        }
+        else {
+            body.classList.add("body-highcontrast");
+            text1.classList.add("uploadimage-text");
+            text2.classList.add("imagereturn-text");
+            text3.classList.add("uploaded-text");
+            text4.classList.add("nopicture-text")
+            contrastSwitch = true;
+        }
+        
+    
+    }
+
 </script>
 
-<body>
+<body id="body">
 
     <div class="container">
         
@@ -28,8 +61,10 @@
         </div>
 
         <div class="menu">
-            <button class="button-contrast" onclick="window.location.href='/high-contrast/'">Switch to high contrast</button>
+            <button class="button-contrast" onclick="contrastSwitchfunction()">Switch to high contrast</button>
+
             <button class="button-tts" onclick="setTTS()">Toggle Text-to-Speech</button>
+
             <p> </p>
             <div class="dropdown-clothing">
                 <button class="clothing">Clothing</button>
@@ -45,7 +80,7 @@
         </div>
         
         <div class="main">
-            <h1>Upload a image!</h1>
+            <h1 id="uploadImage">Upload a image!</h1>
 
             <form method="POST" enctype="multipart/form-data">
 
@@ -53,7 +88,7 @@
                 <br>
     
                 {%if noPictureSelected %}
-                <p style="color:red">{{noPictureSelected}}</p>
+                <p id="noPicture">{{noPictureSelected}}</p>
                 {% endif%}
     
                 <input type="submit" class="button">
@@ -61,7 +96,7 @@
             </form>
 
             {% if scores %}
-            <h2>Uploaded:</h2>
+            <h2 id="uploaded">Uploaded:</h2>
             {% endif %}
 
             {% if query_path %}
@@ -69,7 +104,7 @@
             {% endif %}
 
             {% if scores %}
-            <h2>Your image returned these products:</h2>
+            <h2 id="imageReturn">Your image returned these products:</h2>
             {% endif %}
 
             <div class="product-container">
