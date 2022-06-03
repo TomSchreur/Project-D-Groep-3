@@ -1,5 +1,8 @@
 import numpy as np
 import os
+from os.path import exists
+import json
+import sys
 import threading
 from PIL import Image
 import shutil
@@ -33,8 +36,14 @@ def index():
         # uploaded contains the last-uploaded image by user
         shutil.rmtree('static/uploaded')
         os.mkdir('static/uploaded')
-        shutil.rmtree('static/mp3files')
+        if(exists('static/mp3files')):   
+            shutil.rmtree('static/mp3files')
+        if(exists('static/declare')):   
+            shutil.rmtree('static/declare')
+        
+        
         os.mkdir('static/mp3files')
+
         file = request.files['query_img']
 
         noPictureSelected = 'Geen bestand geselecteerd.'
@@ -50,7 +59,7 @@ def index():
         # Run search
         query = fe.extract(img)
         dists = np.linalg.norm(features-query, axis=1)  # L2 distances to features
-        ids = np.argsort(dists)[:30]  # Top 30 results
+        ids = np.argsort(dists)[:90]  # Top 30 results
 
         mp3ThreadClass = Mp3Gen(ids)
         mp3Threads = list()
@@ -61,15 +70,14 @@ def index():
             x = threading.Thread(target=mp3ThreadClass.generateMp3Threading, args=(i,))
             mp3Threads.append(x)
             x.start()
-        for y in mp3Threads:
-            y.join()
+        # for y in mp3Threads:
+        #     y.join()
 
         end_time = perf_counter()
         print("Total time mp3 gen: ", end_time - start_time)
 
         # establish scores to pass to HTML
-        scores = [(
-            dists[id], 
+        fullLoad = [(
             Products[id].image_path, 
             Products[id].name, 
             getPrice(Products[id].price, Products[id].discount), 
@@ -77,9 +85,26 @@ def index():
             Products[id].product_page) 
             for id in ids]
 
+        jsondata = {}
+        otherdata = []    
+        jsoncount=0
+
+        for id in ids:
+            key = "product" + str(jsoncount)
+            item = key={"img":Products[id].image_path, "name":Products[id].name,"price":getPrice(Products[id].price, Products[id].discount),"mp3":f"./static/mp3files/{Products[id].name}.mp3","page":Products[id].product_page}
+            jsoncount = jsoncount+1
+            otherdata.append(item)
+
+        jsondata = json.dumps(otherdata)
+
+        with open('./static/declare.json','w') as j:
+            j.write(jsondata)
+
+
+
         return render_template('index.html',
                                query_path=uploaded_img_path,
-                               scores=scores) 
+                               scores= fullLoad[:9], fullLoad=jsondata) 
 
     else:
         return render_template('index.html')
@@ -92,6 +117,8 @@ def highContrastSwitch():
         os.mkdir('static/uploaded')
         shutil.rmtree('static/mp3files')
         os.mkdir('static/mp3files')
+        shutil.rmtree('static/declare.json')
+        os.mkdir('static/declare.json')
         file = request.files['query_img']
 
         noPictureSelected = 'Geen bestand geselecteerd.'
