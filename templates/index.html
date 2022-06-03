@@ -26,7 +26,7 @@
         </script>
     </head>
 
-    <body>
+    <body id="body">
 
         <nav>
 
@@ -45,12 +45,51 @@
                     <td><p class="switchtxt">high contrast mode</p></td>
                     <td>
                         <label class="switch">
-                            <input type="checkbox" onclick="window.location.href='/high-contrast/'">
+                            <input type="checkbox" onclick="contrastSwitchfunction()">
                             <span class="slider"></span>
                         </label>
                     </td>
     
                 </tr>
+                <script>
+                    var contrastSwitch = false;
+                    
+                    function contrastSwitchfunction(){ 
+                        var body = document.getElementById("body");
+                        var verzendbutton = document.getElementById("verzend-button");
+                        var cardtexthc = document.getElementById("product-cardhc");
+                        var uploadedtexthc = document.getElementById("uploadedText");
+                        
+                        var imagereturntexth = document.getElementById("imagereturnText");
+
+                        console.log(contrastSwitch);
+
+                        if (contrastSwitch){
+                            body.classList.remove("body-highcontrast");
+                            verzendbutton.classList.remove("verzend-button1");
+                            uploadedtexthc.classList.remove("uploaded-text");
+                            imagereturntexth.classList.remove("imagereturn-text");
+                            
+                            cardtexthc.classList.remove("product-cardhc");
+
+
+                            
+
+                            contrastSwitch = false;
+                        }
+                        else {
+                            body.classList.add("body-highcontrast");
+                            verzendbutton.classList.add("verzend-button1");
+                            uploadedtexthc.classList.add("uploaded-text");
+                            imagereturntexth.classList.add("imagereturn-text");
+                            cardtexthc.classList.add("product-cardhc");
+
+                            contrastSwitch = true;
+                        }
+                        
+                    
+                    }
+                </script>
                 <tr>
     
                     <td><p class="switchtxt">Text-to-Speech</p></td>
@@ -89,17 +128,17 @@
                 <body> -->
         
         <div class="main">
-            <div class="upload-container">
+            <div id="uploadContainerhc" class="upload-container">
                 <form method="POST" enctype="multipart/form-data">
                     <input type="file" id="file_upload" name="query_img" class="vak"/>
                     <div class="submitbutton">
-                        <input type="submit" class="button"/>
+                        <input id="verzend-button" type="submit" class="button"/>
                     </div>
                 </form>
             </div>
 
             {% if scores %}
-            <h2>Uploaded:</h2>
+            <h2 id="uploadedText">Uploaded:</h2>
             {% endif %}
 
             {% if query_path %}
@@ -107,7 +146,7 @@
             {% endif %}
 
             {% if scores %}
-            <h2>Your image returned these products:</h2>
+            <h2 id="imagereturnText">Your image returned these products:</h2>
             {% endif %}
 
             <div class="product-container">
@@ -120,7 +159,7 @@
                         console.log(countProduct);
                     </script>
                     
-                    <div class="product-card">
+                    <div id= product-cardhc class="product-card">
                         <div class="text">
                             <p class="name">{{ score[2] }}</p>
                         </div>
