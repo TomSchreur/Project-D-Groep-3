@@ -34,14 +34,14 @@ class FeatureExtractor:
         return feature / np.linalg.norm(feature)  # Normalize
 
 class DbFeatures:
-    def __init__(self):
-        self.products = selectallFromTable("Products")
+    def __init__(self, products = selectallFromTable("Products")):
+        self.products = products
         self.lock = threading.Lock()
         self.features = []
         self.fe = FeatureExtractor()
         self.productCount = 0
     
-    def getFeature(self, threadId):
+    def getFeature(self, threadId = 0):
         with self.lock:
             while self.productCount < len(self.products):
                 # get image from web

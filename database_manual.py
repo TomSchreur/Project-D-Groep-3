@@ -41,6 +41,24 @@ def createCategorytable():
             sub_category text NOT NULL UNIQUE
             ); """)
 
+def createTesttable():
+    with create_connection("testdatabase.db") as db: #way to run queries to the database
+        cur = db.cursor()
+        cur.execute(""" CREATE TABLE IF NOT EXISTS Testtable (
+            id integer PRIMARY KEY AUTOINCREMENT, 
+            image_path text NOT NULL
+            ); """)
+
+def selectallFromTesttable():
+    with create_connection("testdatabase.db") as db:
+        cur = db.cursor()
+        return cur.execute(f"""SELECT * FROM Testtable""").fetchall()
+
+def insertintoTetstable(image_path):
+    with create_connection("testdatabase.db") as db:
+        cur = db.cursor()
+        cur.execute("""INSERT INTO Testtable (image_path) VALUES(?);""",(image_path))
+
 def insertintoProductstable(name, price, category_id, description, discount, product_page, image_path):
     with create_connection("database.db") as db:
         cur = db.cursor()
