@@ -1,4 +1,3 @@
-from math import prod
 from unicodedata import category
 from PIL import Image
 import feature_extractor as fe
