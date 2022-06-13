@@ -5,6 +5,7 @@ from DbClasses import Product, Category, getPrice
 import random
 from sqlite3 import Error
 import feature_extractor
+import offline as of
 #weet niet zeker of sqlite via pip moet gebeuren (bij mij niet). zoja, toevoegen bij requirements.txt
 listImgNames=[]
 
@@ -145,9 +146,4 @@ if __name__ == '__main__':
     feature_extractor.parseJson(getProductsJSON(), getCategoriesJSON())
     insertCategoryTable()
     insertProductTable()
-
-#categories = ["Sweater & Hoodies", "Sport Pants", "Sweater", "Jeans", "Shirt"] 
-#create list
-#for each product, add:
-#   Product(0, *Product Name (website)*, *image link*, *Product price*, *see categories for id*, *generate description*, *generate discount*)
-#foreach product in list, add to db
+    of.OfflineAlg()
