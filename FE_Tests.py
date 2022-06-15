@@ -8,6 +8,8 @@ from time import perf_counter
 import numpy as np
 from database_manual import *
 
+image_formats = ["image/png","image/jpg","image/jpeg"]
+
 class TestClass:
     def __init__(self, id, image_path):
         self.id = id
@@ -63,24 +65,33 @@ def GetFeature():
     else:
         print("GetFeature() with an empty database was unsuccessfull")
 
-    insertintoTetstable(["https://media.s-bol.com/q534ypoL4lG/550x715.jpg"])
+    
+    r = requests.head("https://media.s-bol.com/q534ypoL4lG/550x715.jpg")
+    if r.headers["content-type"] in image_formats:
+        insertintoTetstable(["https://media.s-bol.com/q534ypoL4lG/550x715.jpg"])
 
-    if trygetfeature():
-        print("GetFeature() with a database with a valid image_path was successfull")
+        if trygetfeature():
+            print("GetFeature() with a database with a valid image_path was successfull")
+        else:
+            print("GetFeature() with a database with a valid image_paths was unsuccessfull")
     else:
-        print("GetFeature() with a database with a valid image_paths was unsuccessfull")
+        print("https://media.s-bol.com/q534ypoL4lG/550x715.jpg is not a valid image and could therefore not be added to the database")
 
     with create_connection("testdatabase.db") as db:
         c = db.cursor()
         c.execute("""DELETE FROM Testtable;""")
         db.commit()
 
-    insertintoTetstable(["https://www.google.com/"])
+    r = requests.head("https://www.google.com/")
+    if r.headers["content-type"] in image_formats:
+        insertintoTetstable(["https://www.google.com/"])
 
-    if trygetfeature():
-        print("GetFeature() with a database with an invalid image_path was successfull")
+        if trygetfeature():
+            print("GetFeature() with a database with an invalid image_path was successfull")
+        else:
+            print("GetFeature() with a database with an invalid image_paths was unsuccessfull")
     else:
-        print("GetFeature() with a database with an invalid image_paths was unsuccessfull")
+        print("https://www.google.com/ is not a valid image and could therefore not be added to the database")
 
     shutil.rmtree('static/imageStorageTemp')
 

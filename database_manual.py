@@ -5,8 +5,10 @@ from DbClasses import Product, Category, getPrice
 import random
 from sqlite3 import Error
 import feature_extractor
+import requests
 #weet niet zeker of sqlite via pip moet gebeuren (bij mij niet). zoja, toevoegen bij requirements.txt
 listImgNames=[]
+image_formats = ["image/png","image/jpg","image/jpeg"]
 
 def create_connection(db_file):
     #create a database connection to a SQLite database, creates the file if it doesn't exist
@@ -130,14 +132,18 @@ def insertProductTable():
     cursor = conn.cursor()
     for pt in range(len(categoryArr)):
         for p in productArr[pt]:
-            name = p["Name"]
-            price = p["Price"]
-            discount = p["Discount"]
-            discountPrice = getPrice(price, discount)
-            product_page = p["ProductPage"]
             image_path = p["ImagePath"]
-            description = "The product name is: " + name + ". The price is € " + discountPrice + ". The category is: " + categoryArr[pt]["Category"] + " of sub category " + categoryArr[pt]["SubCategory"]
-            cursor.execute("""INSERT OR IGNORE INTO Products (name, price, category_id, description, discount, product_page, image_path) VALUES(?,?,?,?,?,?,?)""", (name, price, pt + 1, description, discount, product_page, image_path))
+            r = requests.head(image_path)
+            if r.headers["content-type"] in image_formats:
+                name = p["Name"]
+                price = p["Price"]
+                discount = p["Discount"]
+                discountPrice = getPrice(price, discount)
+                product_page = p["ProductPage"]
+                description = "The product name is: " + name + ". The price is € " + discountPrice + ". The category is: " + categoryArr[pt]["Category"] + " of sub category " + categoryArr[pt]["SubCategory"]
+                cursor.execute("""INSERT OR IGNORE INTO Products (name, price, category_id, description, discount, product_page, image_path) VALUES(?,?,?,?,?,?,?)""", (name, price, pt + 1, description, discount, product_page, image_path))
+            else:
+                print("{image_path} does not reference a valid image. The product was not added to the database.")
     conn.commit()
     cursor.close()
     conn.close()
