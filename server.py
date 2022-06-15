@@ -55,6 +55,11 @@ def index():
         img = Image.open(file.stream)  # PIL image
         uploaded_img_path = "static/uploaded/" + datetime.now().isoformat().replace(":", ".") + "_" + file.filename
         img.save(uploaded_img_path)
+        
+        if len(Products) == 0:
+            return render_template('index.html',
+                               query_path=uploaded_img_path,
+                               scores= 1) 
 
         # Run search
         query = fe.extract(img)

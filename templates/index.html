@@ -137,8 +137,8 @@
                 {% endif %}
 
                 {% if scores %}
+                {% if scores != 1 %}
                 <h2>Your image returned these products:</h2>
-                {% endif %}
 
                 <div id="scroller">
                     <div class="product-list" id="p-list">       
@@ -157,6 +157,10 @@
                         <div class="spinner-border" role="status"> </div>
                     </div>
                 </div>
+                {% else %}
+                <h2>Could not retrieve any results</h2>
+                {% endif %}
+                {% endif %}
                 
             <script type="text/javascript">
 
