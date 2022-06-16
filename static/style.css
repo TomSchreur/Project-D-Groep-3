@@ -342,7 +342,6 @@ display: block;
 /* MAIN */
 .main{
     grid-area: main;
-
 }
 
 
@@ -363,6 +362,7 @@ display: block;
     max-width: 100%;
     border-style: solid;
     word-wrap: break-word;
+    transition: 200ms ease-in-out;
 }
 
 .product-card .img{
