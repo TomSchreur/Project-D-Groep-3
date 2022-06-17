@@ -366,9 +366,9 @@ display: block;
 }
 
 .product-card .img{
-    padding-top: 5px;
-    width: 300px;
-    height: 300px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .product-card .text{
@@ -377,9 +377,10 @@ display: block;
     font-size: larger;
 }
 
-.product-card .text .price{
-    padding-top: 5px;
-    
+.product-card  .text .price{
+    position: fixed;
+    bottom: 0;
+    left: 0;
 }
 
 .product-card:hover{
@@ -402,6 +403,8 @@ display: block;
 .product-cardhc{
     background-color: black;
     color: rgb(51, 236, 0);
+    height: 480px;
+    font-size: 1.5em;
 }
 
 
