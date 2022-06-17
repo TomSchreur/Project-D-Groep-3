@@ -49,40 +49,46 @@
                             <span class="slider"></span>
                         </label>
                     </td>
-    
+             
                 </tr>
                 <script>
                     var contrastSwitch = false;
                     
                     function contrastSwitchfunction(){ 
                         var body = document.getElementById("body");
-                        var verzendbutton = document.getElementById("verzend-button");
-                        var cardtexthc = document.getElementById("product-cardhc");
                         var uploadedtexthc = document.getElementById("uploadedText");
-                        
-                        var imagereturntexth = document.getElementById("imagereturnText");
+                        var imagereturntexth = document.getElementById("imagereturnText"); 
+
+                        var cardtexthc = document.getElementsByClassName("product-cardhcID");
 
                         console.log(contrastSwitch);
 
                         if (contrastSwitch){
                             body.classList.remove("body-highcontrast");
-                            verzendbutton.classList.remove("verzend-button1");
-                            uploadedtexthc.classList.remove("uploaded-text");
-                            imagereturntexth.classList.remove("imagereturn-text");
-                            
-                            cardtexthc.classList.remove("product-cardhc");
 
+                            if(uploadedtexthc != undefined){
+                                uploadedtexthc.classList.remove("uploaded-text");
+                                imagereturntexth.classList.remove("imagereturn-text");
+                                
+                                for(let x of cardtexthc){
+                                    x.classList.remove("product-cardhc");
+                                }
+                            }
 
-                            
 
                             contrastSwitch = false;
                         }
                         else {
                             body.classList.add("body-highcontrast");
-                            verzendbutton.classList.add("verzend-button1");
-                            uploadedtexthc.classList.add("uploaded-text");
-                            imagereturntexth.classList.add("imagereturn-text");
-                            cardtexthc.classList.add("product-cardhc");
+
+                            if(uploadedtexthc != undefined){
+                                uploadedtexthc.classList.add("uploaded-text");
+                                imagereturntexth.classList.add("imagereturn-text");
+
+                                for(let x of cardtexthc){
+                                    x.classList.add("product-cardhc");
+                                }
+                            }
 
                             contrastSwitch = true;
                         }
@@ -168,7 +174,7 @@
                 </div>
 
                 {% if scores %}
-                <h2>Uploaded:</h2>
+                <h2 id="uploadedText">Uploaded:</h2>
                 {% endif %}
 
                 {% if query_path %}
@@ -176,13 +182,13 @@
                 {% endif %}
 
                 {% if scores %}
-                <h2>Your image returned these products:</h2>
+                <h2 id="imagereturnText">Your image returned these products:</h2>
                 {% endif %}
 
                 <div id="scroller">
                     <div class="product-list" id="p-list">       
                         <template id ="product-template">
-                            <div class="product-card">
+                            <div id="product-cardhc" class="product-cardhcID product-card">
                                 <p id="name"></p>
                                 <a id = "product-page"> 
                                     <img class ="img" id ="p-img"   height="200px" onmouseover= play(this.name) onmouseout="pause()"> 

@@ -398,13 +398,8 @@ display: block;
     color: yellow;
 }
 
-.verzend-button1{
-    background-color: black; /* bol.com blue*/
-    border-color: aqua;
-    color: aqua;
-}
 
-#product-cardhc{
+.product-cardhc{
     background-color: black;
     color: rgb(51, 236, 0);
 }
