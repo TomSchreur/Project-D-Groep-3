@@ -384,7 +384,7 @@ display: block;
 }
 
 .uploaded-text{
-    color: yellow
+    color: yellow;
 }
 
 .imagereturn-text{
@@ -395,6 +395,7 @@ display: block;
 .product-cardhc{
     background-color: black;
     color: rgb(51, 236, 0);
+    border-color: #E300FC;
     height: 480px;
     font-size: 1.3em;
 }

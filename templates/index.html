@@ -57,7 +57,7 @@
                     function contrastSwitchfunction(){ 
                         var body = document.getElementById("body");
                         var uploadedtexthc = document.getElementById("uploadedText");
-                        var imagereturntexth = document.getElementById("imagereturnText"); 
+                        var imagereturntexthc = document.getElementById("imagereturnText"); 
 
                         var cardtexthc = document.getElementsByClassName("product-cardhcID");
 
@@ -68,7 +68,7 @@
 
                             if(uploadedtexthc != undefined){
                                 uploadedtexthc.classList.remove("uploaded-text");
-                                imagereturntexth.classList.remove("imagereturn-text");
+                                imagereturntexthc.classList.remove("imagereturn-text");
                                 
                                 for(let x of cardtexthc){
                                     x.classList.remove("product-cardhc");
@@ -83,7 +83,7 @@
 
                             if(uploadedtexthc != undefined){
                                 uploadedtexthc.classList.add("uploaded-text");
-                                imagereturntexth.classList.add("imagereturn-text");
+                                imagereturntexthc.classList.add("imagereturn-text");
 
                                 for(let x of cardtexthc){
                                     x.classList.add("product-cardhc");
