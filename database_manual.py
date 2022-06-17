@@ -119,7 +119,7 @@ def insertProductTable():
             discountPrice = getPrice(price, discount)
             product_page = p["ProductPage"]
             image_path = p["ImagePath"]
-            description = "The product name is: " + name + ". The price is € " + discountPrice + ". The category is: " + categoryArr[pt]["Category"] + " of sub category " + categoryArr[pt]["SubCategory"]
+            description = "The product name is: " + name + ". The price is " + discountPrice + ". The category is: " + categoryArr[pt]["Category"] + " of sub category " + categoryArr[pt]["SubCategory"]
             cursor.execute("""INSERT OR IGNORE INTO Products (name, price, category_id, description, discount, product_page, image_path) VALUES(?,?,?,?,?,?,?)""", (name, price, pt + 1, description, discount, product_page, image_path))
     conn.commit()
     cursor.close()

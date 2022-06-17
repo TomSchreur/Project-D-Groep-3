@@ -41,4 +41,4 @@ def getPrice(price, discount = 0):
     cents = result[-2:]
     if cents == "00":
         result = result.replace(cents, "-", 1)
-    return result
+    return "€" + result
