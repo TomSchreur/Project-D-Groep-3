@@ -371,16 +371,8 @@ display: block;
     margin-right: auto;
 }
 
-.product-card .text{
-    font-weight: bold;
-    text-align: left;
-    font-size: larger;
-}
-
-.product-card  .text .price{
-    position: fixed;
-    bottom: 0;
-    left: 0;
+.product-card .price{
+    margin-top: 5px;
 }
 
 .product-card:hover{
@@ -404,7 +396,7 @@ display: block;
     background-color: black;
     color: rgb(51, 236, 0);
     height: 480px;
-    font-size: 1.5em;
+    font-size: 1.3em;
 }
 
 
