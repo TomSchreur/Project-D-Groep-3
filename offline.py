@@ -1,8 +1,7 @@
-from math import prod
 from unicodedata import category
 from PIL import Image
-from feature_extractor import DbFeatures, parseJson
-from database_manual import selectallFromTable, getCategoriesJSON, getProductsJSON
+import feature_extractor as fe
+import database_manual as db
 from time import perf_counter
 from pathlib import Path
 import numpy as np
@@ -11,8 +10,8 @@ import shutil
 import os
 import json
 
-if __name__ == '__main__':
-    featureClass = DbFeatures()
+def OfflineAlg():
+    featureClass = fe.DbFeatures()
     featureThreads = list()
     try:
         shutil.rmtree('static/imageStorageTemp')
@@ -23,9 +22,9 @@ if __name__ == '__main__':
     except:
         print("directory was already created, continuing w execution")
     
-    products = getProductsJSON()
-    categories = getCategoriesJSON()
-    parseJson(products, categories)
+    products = db.getProductsJSON()
+    categories = db.getCategoriesJSON()
+    fe.parseJson(products, categories)
 
     start_time = perf_counter()
     for i in range(5):
@@ -42,4 +41,3 @@ if __name__ == '__main__':
         np.save(fs, featureClass.features)
     
     shutil.rmtree('static/imageStorageTemp')
-
