@@ -49,40 +49,51 @@
                             <span class="slider"></span>
                         </label>
                     </td>
-    
+             
                 </tr>
                 <script>
                     var contrastSwitch = false;
                     
                     function contrastSwitchfunction(){ 
                         var body = document.getElementById("body");
-                        var verzendbutton = document.getElementById("verzend-button");
-                        var cardtexthc = document.getElementById("product-cardhc");
                         var uploadedtexthc = document.getElementById("uploadedText");
-                        
                         var imagereturntexth = document.getElementById("imagereturnText");
+                        var uploadbuttonhc = document.getElementById("uploadbtton")
+
+                        var cardtexthc = document.getElementsByClassName("product-cardhcID");
 
                         console.log(contrastSwitch);
 
                         if (contrastSwitch){
                             body.classList.remove("body-highcontrast");
-                            verzendbutton.classList.remove("verzend-button1");
-                            uploadedtexthc.classList.remove("uploaded-text");
-                            imagereturntexth.classList.remove("imagereturn-text");
-                            
-                            cardtexthc.classList.remove("product-cardhc");
+                            uploadbuttonhc.classList.remove("upload-buttonhc");
 
+                            if(uploadedtexthc != undefined){
+                                uploadedtexthc.classList.remove("uploaded-text");
+                                imagereturntexth.classList.remove("imagereturn-text");
+                                // uploadbuttonhc.classList.remove("upload-buttonhc");
+                                
+                                for(let x of cardtexthc){
+                                    x.classList.remove("product-cardhc");
+                                }
+                            }
 
-                            
 
                             contrastSwitch = false;
                         }
                         else {
                             body.classList.add("body-highcontrast");
-                            verzendbutton.classList.add("verzend-button1");
-                            uploadedtexthc.classList.add("uploaded-text");
-                            imagereturntexth.classList.add("imagereturn-text");
-                            cardtexthc.classList.add("product-cardhc");
+                            uploadbuttonhc.classList.add("upload-buttonhc");
+
+                            if(uploadedtexthc != undefined){
+                                uploadedtexthc.classList.add("uploaded-text");
+                                imagereturntexth.classList.add("imagereturn-text");
+                                // uploadbuttonhc.classList.remove("upload-buttonhc");
+
+                                for(let x of cardtexthc){
+                                    x.classList.add("product-cardhc");
+                                }
+                            }
 
                             contrastSwitch = true;
                         }
@@ -168,7 +179,7 @@
                 </div>
 
                 {% if scores %}
-                <h2>Uploaded:</h2>
+                <h2 id="uploadedText">Uploaded:</h2>
 
                 <script>
                     let el = document.querySelector(".upload-container")
@@ -182,18 +193,18 @@
                 {% endif %}
 
                 {% if scores %}
-                <h2>Your image returned these products:</h2>
+                <h2 id="imagereturnText">Your image returned these products:</h2>
                 {% endif %}
 
                 <div id="scroller">
                     <div class="product-list" id="p-list">       
                         <template id ="product-template">
-                            <div class="product-card">
+                            <div id="product-cardhc" class="product-cardhcID product-card">
                                 <p id="name"></p>
                                 <a id = "product-page"> 
-                                    <img class ="img" id ="p-img"   height="200px" onmouseover= play(this.name) onmouseout="pause()"> 
+                                    <img class ="img" id ="p-img" onmouseover= play(this.name) onmouseout="pause()"> 
                                 </a>
-                                    <p id="price"></p>
+                                    <p class="price" id="price"></p>
                             </div>
                             <audio id="audio"></audio>
                         </template>
@@ -212,21 +223,29 @@
 
                     function loadProducts(){
                         console.log("Retrieving data function");
-                        
+
                         fetch('../static/declare.json')
                             .then(resp=>resp.json())
                             .then(data =>{
-                                
+
                                 console.log(data);
                                 for(i=0; i<size;i++)
                                 {
 
                                     let product = template.content.cloneNode(true);
-            
+
                                     product.querySelector("#name").innerHTML = data[countProduct].name;
                                     product.querySelector("#product-page").href= data[countProduct].page;
                                     product.querySelector("#p-img").src = data[countProduct].img;
                                     product.querySelector("#p-img").name = data[countProduct].mp3
+                                    var img = new Image();
+                                    console.log("cropping image");
+                                    img.src=data[countProduct].img;
+                                    console.log(img.height, img.width);
+                                    if(img.height >= img.width)
+                                        product.querySelector('#p-img').style.height = "300px";
+                                    else
+                                        product.querySelector('#p-img').style.width = "300px";
                                     product.querySelector("#price").innerHTML = data[countProduct].price;
                                     product.querySelector("#audio").src=data[countProduct].mp3;
                                     productlist.appendChild(product);
@@ -235,10 +254,8 @@
                                     console.log("Element appended");
                                 }
                             });
-                    
-
-                        
                     }
+
 
                     let options = { rootMargin: '0px',threshold: 1.0}
                     var observer = new IntersectionObserver(e => {
