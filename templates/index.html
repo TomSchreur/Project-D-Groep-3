@@ -196,9 +196,9 @@
                             <div id="product-cardhc" class="product-cardhcID product-card">
                                 <p id="name"></p>
                                 <a id = "product-page"> 
-                                    <img class ="img" id ="p-img"   height="200px" onmouseover= play(this.name) onmouseout="pause()"> 
+                                    <img class ="img" id ="p-img" onmouseover= play(this.name) onmouseout="pause()"> 
                                 </a>
-                                    <p id="price"></p>
+                                    <p class="price" id="price"></p>
                             </div>
                             <audio id="audio"></audio>
                         </template>
@@ -232,6 +232,14 @@
                                 product.querySelector("#product-page").href= data[countProduct].page;
                                 product.querySelector("#p-img").src = data[countProduct].img;
                                 product.querySelector("#p-img").name = data[countProduct].mp3
+                                var img = new Image();
+                                console.log("cropping image");
+                                img.src=data[countProduct].img;
+                                console.log(img.height, img.width);
+                                if(img.height >= img.width)
+                                    product.querySelector('#p-img').style.height = "300px";
+                                else
+                                    product.querySelector('#p-img').style.width = "300px";
                                 product.querySelector("#price").innerHTML = data[countProduct].price;
                                 product.querySelector("#audio").src=data[countProduct].mp3;
                                 productlist.appendChild(product);
