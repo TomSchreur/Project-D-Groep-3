@@ -63,7 +63,7 @@
     position: absolute;
     left: 50%;
     transform: translate(-50%, -50%);
-    padding-top: 30px;
+    padding-top: 45px;
     clear: both;
 }
 
@@ -342,6 +342,7 @@ display: block;
 /* MAIN */
 .main{
     grid-area: main;
+    padding-top: 20px;
 }
 
 
