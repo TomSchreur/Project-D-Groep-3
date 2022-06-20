@@ -57,7 +57,8 @@
                     function contrastSwitchfunction(){ 
                         var body = document.getElementById("body");
                         var uploadedtexthc = document.getElementById("uploadedText");
-                        var imagereturntexth = document.getElementById("imagereturnText"); 
+                        var imagereturntexth = document.getElementById("imagereturnText");
+                        var uploadbuttonhc = document.getElementById("uploadbtton")
 
                         var cardtexthc = document.getElementsByClassName("product-cardhcID");
 
@@ -65,10 +66,12 @@
 
                         if (contrastSwitch){
                             body.classList.remove("body-highcontrast");
+                            uploadbuttonhc.classList.remove("upload-buttonhc");
 
                             if(uploadedtexthc != undefined){
                                 uploadedtexthc.classList.remove("uploaded-text");
                                 imagereturntexth.classList.remove("imagereturn-text");
+                                // uploadbuttonhc.classList.remove("upload-buttonhc");
                                 
                                 for(let x of cardtexthc){
                                     x.classList.remove("product-cardhc");
@@ -80,10 +83,12 @@
                         }
                         else {
                             body.classList.add("body-highcontrast");
+                            uploadbuttonhc.classList.add("upload-buttonhc");
 
                             if(uploadedtexthc != undefined){
                                 uploadedtexthc.classList.add("uploaded-text");
                                 imagereturntexth.classList.add("imagereturn-text");
+                                // uploadbuttonhc.classList.remove("upload-buttonhc");
 
                                 for(let x of cardtexthc){
                                     x.classList.add("product-cardhc");
@@ -202,7 +207,7 @@
                         <div class="spinner-border" role="status"> </div>
                     </div>
                 </div>
-                
+
             <script type="text/javascript">
 
                 var scroller = document.getElementById('scroller');
@@ -212,17 +217,17 @@
 
                 function loadProducts(){
                     console.log("Retrieving data function");
-                    
+
                     fetch('../static/declare.json')
                         .then(resp=>resp.json())
                         .then(data =>{
-                            
+
                             console.log(data);
                             for(i=0; i<size;i++)
                             {
 
                                 let product = template.content.cloneNode(true);
-          
+
                                 product.querySelector("#name").innerHTML = data[countProduct].name;
                                 product.querySelector("#product-page").href= data[countProduct].page;
                                 product.querySelector("#p-img").src = data[countProduct].img;
@@ -235,9 +240,6 @@
                                 console.log("Element appended");
                             }
                         });
-                   
-
-                    
                 }
 
                 let options = { rootMargin: '0px',threshold: 1.0}
