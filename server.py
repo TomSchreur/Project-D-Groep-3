@@ -14,10 +14,13 @@ from database_manual import selectProducts, selectallFromTable
 from time import perf_counter
 from DbClasses import getPrice
 from TextToSpeech import createTempProductMp3, Mp3Gen
+import string
+import random
+
 app = Flask(__name__)
 
 #session data encryptionkey
-app.secret_key = "hello"
+app.secret_key = ''.join(random.choice(string.ascii_letters + string.digits + string.punctuation) for i in range(8))
 
 # Read image features
 fe = FeatureExtractor()
