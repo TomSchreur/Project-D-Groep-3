@@ -54,6 +54,47 @@
                 <script>
                     var contrastSwitch = false;
                     
+                    function contrastCheck(){
+                        var body = document.getElementById("body");
+                        var uploadedtexthc = document.getElementById("uploadedText");
+                        var imagereturntexth = document.getElementById("imagereturnText");
+                        var uploadbuttonhc = document.getElementById("uploadbtton")
+
+                        var cardtexthc = document.getElementsByClassName("product-cardhcID");
+
+                        console.log(contrastSwitch);
+
+                        if (!contrastSwitch){
+                            body.classList.remove("body-highcontrast");
+                            uploadbuttonhc.classList.remove("upload-buttonhc");
+
+                            if(uploadedtexthc != undefined){
+                                uploadedtexthc.classList.remove("uploaded-text");
+                                imagereturntexth.classList.remove("imagereturn-text");
+                                // uploadbuttonhc.classList.remove("upload-buttonhc");
+                                
+                                for(let x of cardtexthc){
+                                    x.classList.remove("product-cardhc");
+                                }
+                            }
+                        }
+                        else {
+                            body.classList.add("body-highcontrast");
+                            uploadbuttonhc.classList.add("upload-buttonhc");
+
+                            if(uploadedtexthc != undefined){
+                                uploadedtexthc.classList.add("uploaded-text");
+                                imagereturntexth.classList.add("imagereturn-text");
+                                // uploadbuttonhc.classList.remove("upload-buttonhc");
+
+                                for(let x of cardtexthc){
+                                    x.classList.add("product-cardhc");
+                                }
+                            }
+                        }
+
+                    }
+
                     function contrastSwitchfunction(){ 
                         var body = document.getElementById("body");
                         var uploadedtexthc = document.getElementById("uploadedText");
@@ -231,21 +272,26 @@
                                 product.querySelector("#name").innerHTML = data[countProduct].name;
                                 product.querySelector("#product-page").href= data[countProduct].page;
                                 product.querySelector("#p-img").src = data[countProduct].img;
-                                product.querySelector("#p-img").name = data[countProduct].mp3
-                                var img = new Image();
+                                product.querySelector("#p-img").name = data[countProduct].mp3;
+
                                 console.log("cropping image");
-                                img.src=data[countProduct].img;
-                                console.log(img.height, img.width);
-                                if(img.height >= img.width)
+                                var url = data[countProduct].img;
+                                const urlArr = url.split("/");
+                                var Size = urlArr[urlArr.length - 1].split(".")[0];
+                                var Width = parseInt(Size.split("x")[0]);
+                                var Height = parseInt(Size.split("x")[1]);
+                                if(Height >= Width)
                                     product.querySelector('#p-img').style.height = "300px";
                                 else
                                     product.querySelector('#p-img').style.width = "300px";
+
                                 product.querySelector("#price").innerHTML = data[countProduct].price;
                                 product.querySelector("#audio").src=data[countProduct].mp3;
                                 productlist.appendChild(product);
                                 countProduct++;
 
                                 console.log("Element appended");
+                    contrastCheck();
                             }
                         });
                 }
