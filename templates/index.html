@@ -44,7 +44,7 @@
     
                     <td><p class="switchtxt">high contrast mode</p></td>
                     <td>
-                        <label class="switch">
+                        <label id="hcswitch" class="switch">
                             <input type="checkbox" onclick="contrastSwitchfunction()">
                             <span class="slider"></span>
                         </label>
@@ -53,6 +53,12 @@
                 </tr>
                 <script>
                     var contrastSwitch = false;
+
+                    console.log(document.cookie);
+                    if(document.cookie == "HC=true"){
+                        document.getElementById("hcswitch").click();
+                        contrastSwitch = true;
+                    }
                     
                     function contrastCheck(){
                         var body = document.getElementById("body");
@@ -119,8 +125,8 @@
                                 }
                             }
 
-
                             contrastSwitch = false;
+                            document.cookie = "HC=false";
                         }
                         else {
                             body.classList.add("body-highcontrast");
@@ -137,6 +143,7 @@
                             }
 
                             contrastSwitch = true;
+                            document.cookie = "HC=true";
                         }
                         
                     
