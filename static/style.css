@@ -4,7 +4,7 @@
 }
 
 .button {
-    background-color: #020082; /* bol.com blue*/
+    background-color: #0000a4; /* bol.com blue*/
     border: 2px solid black;
     color: white;
     padding: 15px 32px;
@@ -63,7 +63,7 @@
     position: absolute;
     left: 50%;
     transform: translate(-50%, -50%);
-    padding-top: 30px;
+    padding-top: 45px;
     clear: both;
 }
 
@@ -99,13 +99,15 @@
 .upload-container:before {
     float: none;
     position: absolute;
-    top: 35%;
+    top: 45%;
     left: 50%;
-    transform: translate(-50%, -50%);
-    content: " (or) Drag and Drop files here. ";
+    transform: translate(-41%, -50%);
+    content: " Click field to upload or drag and drop files here. ";
+    font-size: 30px;
     color: #0000a4;
     font: montserrat;
-    font-weight: 400;
+    font-weight: 450;
+    width: 400px;
 }
 
 .upload-btn {
@@ -131,7 +133,8 @@ nav {
     position: fixed;
     overflow: hidden;
     clear: both;
-    
+    z-index:1;
+    transition: 200ms ease-in-out;
 }
 
 .logo {
@@ -142,6 +145,7 @@ nav {
 nav ul {
     float: none;
     position: absolute;
+    color: white;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -151,15 +155,19 @@ nav ul li {
     display: inline-block;
     line-height: 75px;
     margin: 0 10px;
-    
 }
 
 nav ul li a {
     text-transform: uppercase;
     font: montserrat;
-    color: white;
+    color: inherit;
     border-radius: 3px;
     font-size: 30px;
+    transition: 200ms ease-in-out;
+}
+
+nav ul li a:visited {
+    color: white;
 }
 
 a.active,a:hover {
@@ -174,6 +182,8 @@ a.active,a:hover {
     display: inline-block;
     width: 60px;
     height: 34px;
+    -webkit-transition: .4s;
+    transition: .4s;
 }
 
 .switch input {
@@ -231,7 +241,29 @@ input:checked+.slider:before {
     color: white;
     font-size: 25px;
     padding-right: 10px;
+    -webkit-transition: .4s;
+    transition: .4s;
 }
+
+nav tr:hover .switchtxt{
+    font-size: 30px;
+    -webkit-transition: .4s;
+    transition: .4s;
+    
+}
+
+nav tr:hover .switch{
+    width: 70px;
+    height: 40px;
+    transition: .4s;
+    
+}
+
+nav tr:hover .slider::before {
+    height: 30px;
+    width: 30px;
+}
+
 .container{
     width: 100%;
     height: 100%;
@@ -342,6 +374,7 @@ display: block;
 /* MAIN */
 .main{
     grid-area: main;
+    padding-top: 20px;
 }
 
 
@@ -411,5 +444,9 @@ display: block;
     font-size: 16px;
     border-radius: 2px;
     position: relative;
+}
+
+.toptexthc{
+    color: yellow;
 }
 

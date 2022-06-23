@@ -34,6 +34,8 @@ Products = selectallFromTable("Products")
 
 @app.route('/', methods=['GET', 'POST',])
 def index():
+    if os.path.exists('static/declare.json'):
+            os.remove('static/declare.json')
     if request.method == 'POST':
         # removes directory 'static/uploaded' & file contained inside
         # uploaded contains the last-uploaded image by user
@@ -41,8 +43,8 @@ def index():
         os.mkdir('static/uploaded')
         if(exists('static/mp3files')):   
             shutil.rmtree('static/mp3files')
-        if(exists('static/declare')):   
-            shutil.rmtree('static/declare')
+        
+
         
         
         os.mkdir('static/mp3files')
