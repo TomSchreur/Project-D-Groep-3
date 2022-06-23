@@ -62,6 +62,7 @@ def parseJson(products, categories):
         for pt in range(len(categories)):
             for p in range(len(jsonObj[categories[pt]["Category"]][categories[pt]["SubCategory"]])):
                 parsedName = jsonObj[categories[pt]["Category"]][categories[pt]["SubCategory"]][p]["Name"].replace('/', ' ')
+                parsedName = parsedName.replace('|', ' ')
                 jsonObj[categories[pt]["Category"]][categories[pt]["SubCategory"]][p]["Name"] = parsedName
     with open('static/DbData.json', "w") as jsonFile:
         json.dump(jsonObj, jsonFile, indent=4)
