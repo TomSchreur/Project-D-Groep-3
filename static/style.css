@@ -134,7 +134,7 @@ nav {
     overflow: hidden;
     clear: both;
     z-index:1;
-    
+    transition: 200ms ease-in-out;
 }
 
 .logo {
@@ -148,13 +148,15 @@ nav ul {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    transition: 200ms ease-in-out;
+    
 }
 
 nav ul li {
     display: inline-block;
     line-height: 75px;
     margin: 0 10px;
-    
+    transition: 200ms ease-in-out;
 }
 
 nav ul li a {
@@ -181,6 +183,8 @@ a.active,a:hover {
     display: inline-block;
     width: 60px;
     height: 34px;
+    -webkit-transition: .4s;
+    transition: .4s;
 }
 
 .switch input {
@@ -238,10 +242,13 @@ input:checked+.slider:before {
     color: white;
     font-size: 25px;
     padding-right: 10px;
+    -webkit-transition: .4s;
+    transition: .4s;
 }
 
 nav tr:hover .switchtxt{
     font-size: 30px;
+    -webkit-transition: .4s;
     transition: .4s;
     
 }

@@ -42,7 +42,7 @@
             <table class="navswitch"> 
                 <tr>
     
-                    <td><p class="switchtxt">high contrast mode</p></td>
+                    <td><p class="switchtxt">High Contrast</p></td>
                     <td>
                         <label class="switch">
                             <input type="checkbox" onclick="contrastSwitchfunction()">
@@ -250,15 +250,19 @@
                                     product.querySelector("#name").innerHTML = data[countProduct].name;
                                     product.querySelector("#product-page").href= data[countProduct].page;
                                     product.querySelector("#p-img").src = data[countProduct].img;
-                                    product.querySelector("#p-img").name = data[countProduct].mp3
-                                    var img = new Image();
+                                    product.querySelector("#p-img").name = data[countProduct].mp3;
+
                                     console.log("cropping image");
-                                    img.src=data[countProduct].img;
-                                    console.log(img.height, img.width);
-                                    if(img.height >= img.width)
+                                    var url = data[countProduct].img;
+                                    const urlArr = url.split("/");
+                                    var Size = urlArr[urlArr.length - 1].split(".")[0];
+                                    var Width = parseInt(Size.split("x")[0]);
+                                    var Height = parseInt(Size.split("x")[1]);
+                                    if(Height >= Width)
                                         product.querySelector('#p-img').style.height = "300px";
                                     else
                                         product.querySelector('#p-img').style.width = "300px";
+
                                     product.querySelector("#price").innerHTML = data[countProduct].price;
                                     product.querySelector("#audio").src=data[countProduct].mp3;
                                     productlist.appendChild(product);
